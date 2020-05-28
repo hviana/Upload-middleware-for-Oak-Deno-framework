@@ -37,7 +37,7 @@ const uploadMiddleware = function (
             let ext = item[1].filename.split(".").pop();
             if (!extensions.includes(ext)) {
               for (const delItem of entries) {
-                if (item[1].tempfile != undefined) {
+                if (delItem[1].tempfile != undefined) {
                   Deno.remove(delItem[1].tempfile);
                 }
               }
