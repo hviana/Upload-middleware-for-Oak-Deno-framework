@@ -11,7 +11,7 @@ Uploads will be in context.uploadedFiles;
 
 This middleware automatically organizes uploads to avoid file system problems and create dirs if not exists, and optimizes ram usage when uploading large files using Deno standard libraries!
 
-Request must contains a body with form with enctype="multipart/form-data", and inputs with type="file". For a while, it does not support input with multiple attribute, but you can work around this in javascript by creating a virtual form and adding an input type="file" element for each "file" object in ("input[multiple]").files.
+Request must contains a body with form with enctype="multipart/form-data", and inputs with type="file". For a while, it does not support input with multiple attribute, but you can work around this in javascript by creating a virtual form and adding an input type="file" element for each "file" object in ("input[multiple]").files (I don't know if it works because of javascript security directives, I haven't tested it).
 ## Examples:
 <pre>
 import { uploadMiddleware } from "https://deno.land/x/upload_middleware_for_oak_framework/mod.ts";
