@@ -1,7 +1,7 @@
 # Upload middleware for Oak Deno framework
 
 ## Usage: 
-uploadMiddleware(path, extensions: (optional ex: [jpg, png], default allow all - []), maxSizeBytes: (optional, max size in bytes, default unlimited - Number.MAX_SAFE_INTEGER), userCurrentDir: (optional, if true the path is relative to current Deno working directory, default true));
+<b>uploadMiddleware</b>(<b>path</b>, <b>extensions</b>: (optional ex: [jpg, png], default allow all - []), <b>maxSizeBytes</b>: (optional, max size in bytes, default unlimited - Number.MAX_SAFE_INTEGER), <b>userCurrentDir</b>: (optional, if true the path is relative to current Deno working directory, default true));
 
 Uploads will be in context.uploadedFiles;
 
