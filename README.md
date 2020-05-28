@@ -12,15 +12,15 @@ This middleware automatically organizes uploads to avoid file system problems an
 <pre>
   .get("/", async (context: any, next: any) => {
     context.response.body = `
-            <form enctype="multipart/form-data" action="/upload" method="post">
-              <input type="file" name="file1"><br>
-              <input type="file" name="file2"><br>
-              <input type="submit" value="Submit">
-            </form>
+            form enctype="multipart/form-data" action="/upload" method="post"
+              input type="file" name="file1"
+              input type="file" name="file2"
+              input type="submit" value="Submit"
+            form
     `;
   })
 
-  .post("/upload", uploadMiddleware('uploads',['jpg','png'],20000000),
+  .post("/upload", <b>uploadMiddleware('uploads',['jpg','png'],20000000)</b>,
     async (context: any, next: any) => {
       context.response.body = context['uploadedFiles'];
     },
@@ -41,4 +41,3 @@ This middleware automatically organizes uploads to avoid file system problems an
 		"url":"uploads/2020/4/4/16/58/43/3a50bf12-6e40-4459-a0c0-52f913e1850e/download.png"
 	}
 }
-
