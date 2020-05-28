@@ -12,7 +12,7 @@ This middleware automatically organizes uploads to avoid file system problems an
 Request must contains a body with form with enctype="multipart/form-data", and inputs with type="file". For a while, it does not support input with multiple attribute, but you can work around this in javascript by creating a virtual form and adding an input type="file" element for each "file" object in ("input[multiple]").files.
 ## Examples:
 <pre>
-import { uploadMiddleware } from "https://deno.land/x/upload_middleware_for_oak_framework@master/mod.ts";
+import { uploadMiddleware } from "https://deno.land/x/upload_middleware_for_oak_framework/mod.ts";
 
   .get("/", async (context: any, next: any) => {
     context.response.body = `
