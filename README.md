@@ -9,44 +9,17 @@ This middleware automatically organizes uploads to avoid file system problems an
 
 Request must contains a body with form with enctype="multipart/form-data", and inputs with type="file". For a while, it does not support input with multiple attribute, but you can work around this in javascript by creating a virtual form and adding an input type="file" element for each "file" object in ("input[multiple]").files.
 ## Examples:
-<pre>
-import { uploadMiddleware } from "https://deno.land/x/upload_middleware_for_oak_framework@master/mod.ts";
+<p>import { uploadMiddleware } from &quot;https://deno.land/x/upload_middleware_for_oak_framework@master/mod.ts&quot;;</p>
 
-  .get("/", async (context: any, next: any) => {
-    context.response.body = `
-            form enctype="multipart/form-data" action="/upload" method="post"
-              input type="file" name="file1"
-              input type="file" name="file2"
-              input type="submit" value="Submit"
-            form
-    `;
-  })
+<p> .get(&quot;/&quot;, async (context: any, next: any) => {  context.response.body = &#96;  form enctype=&quot;multipart/form-data&quot; action=&quot;/upload&quot; method=&quot;post&quot;  input type=&quot;file&quot; name=&quot;file1&quot;  input type=&quot;file&quot; name=&quot;file2&quot;  input type=&quot;submit&quot; value=&quot;Submit&quot;  form  &#96;;  })</p>
 
-  .post("/upload", <b>uploadMiddleware('uploads', ['jpg','png'], 20000000, true)</b>,
-    async (context: any, next: any) => {
-      context.response.body = context.uploadedFiles;
-    },
-  )
+<p> .post(&quot;/upload&quot;, <b>uploadMiddleware('uploads', ['jpg','png'], 20000000, true)</b>,  async (context: any, next: any) => {  context.response.body = context.uploadedFiles;  },  )</p>
 
-  This will return something like:
-  {
-	"file1":{
-		"filename":"test.jpg",
-		"type":"image/jpeg",
-		"size":16980,
-		"url":"uploads/2020/4/4/16/58/43/b16dfb0a-b8b9-4ed3-8c96-2e0a946101fb/test.jpg"
-	},
-	"file2":{
-		"filename":"download.png",
-		"type":"image/png",
-		"size":2623,
-		"url":"uploads/2020/4/4/16/58/43/3a50bf12-6e40-4459-a0c0-52f913e1850e/download.png"
-	}
-}
+<p> This will return something like:  {  &quot;file1&quot;:{  &quot;filename&quot;:&quot;test.jpg&quot;,  &quot;type&quot;:&quot;image/jpeg&quot;,  &quot;size&quot;:16980,  &quot;url&quot;:&quot;uploads/2020/4/4/16/58/43/b16dfb0a-b8b9-4ed3-8c96-2e0a946101fb/test.jpg&quot;  },  &quot;file2&quot;:{  &quot;filename&quot;:&quot;download.png&quot;,  &quot;type&quot;:&quot;image/png&quot;,  &quot;size&quot;:2623,  &quot;url&quot;:&quot;uploads/2020/4/4/16/58/43/3a50bf12-6e40-4459-a0c0-52f913e1850e/download.png&quot;  } }</p>
 
 If you want, you can delete a file sent using (if useCurrentDir = true):
-await Deno.remove(`${Deno.cwd()}/${context.uploadedFiles['file2']['url']}`);
+	await Deno.remove(`${Deno.cwd()}/${context.uploadedFiles['file2']['url']}`);
 Or possibly:
-await Deno.remove(context.uploadedFiles['file2']['url']});
+	await Deno.remove(context.uploadedFiles['file2']['url']});
 Remember that you need permissions:
-deno run --allow-net --allow-read --allow-write ./server.ts
+	deno run --allow-net --allow-read --allow-write ./server.ts
