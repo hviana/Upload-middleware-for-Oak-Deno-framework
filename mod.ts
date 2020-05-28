@@ -38,7 +38,7 @@ const uploadMiddleware = function (
             if (!extensions.includes(ext)) {
               for (const delItem of entries) {
                 if (delItem[1].tempfile != undefined) {
-                  Deno.remove(delItem[1].tempfile);
+                  await Deno.remove(delItem[1].tempfile);
                 }
               }
               context.throw(
