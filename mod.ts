@@ -72,7 +72,10 @@ const uploadMiddleware = function (
           );
           res[formField] = fileData;
           delete res[formField]["tempfile"];
-          res[formField]["url"] = `${uploadPath}/${fileData.filename}`;
+          res[formField]["url"] = encodeURI(
+            `${uploadPath}/${fileData.filename}`,
+          );
+          res[formField]["uri"] = `${fullPath}/${fileData.filename}`;
         }
       }
       context["uploadedFiles"] = res;
