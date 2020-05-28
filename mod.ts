@@ -4,6 +4,7 @@ const uploadMiddleware = function (
   path: string,
   extensions: Array<string> = [],
   maxSizeBytes: number = Number.MAX_SAFE_INTEGER,
+  userCurrentDir: boolean = true,
 ) {
   return async function (context: any, next: any) {
     if (
@@ -60,10 +61,14 @@ const uploadMiddleware = function (
           const d = new Date();
           const uploadPath =
             (`${path}/${d.getFullYear()}/${d.getMonth()}/${d.getDay()}/${d.getHours()}/${d.getMinutes()}/${d.getSeconds()}/${uuid}`);
-          await ensureDir(`${Deno.cwd()}/${uploadPath}`);
+          let fullPath = uploadPath;
+          if (userCurrentDir) {
+            fullPath = `${Deno.cwd()}/${fullPath}`;
+          }
+          await ensureDir(fullPath);
           await move(
             fileData.tempfile,
-            `${Deno.cwd()}/${uploadPath}/${fileData.filename}`,
+            `${fullPath}/${fileData.filename}`,
           );
           res[formField] = fileData;
           delete res[formField]["tempfile"];
