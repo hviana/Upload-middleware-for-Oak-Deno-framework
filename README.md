@@ -3,6 +3,8 @@
 ## Usage: 
 <b>uploadMiddleware</b>(<b>path</b>, <b>extensions</b>: (optional ex: ['jpg', 'png'], default allow all - []), <b>maxSizeBytes</b>: (optional, max size in bytes, default unlimited - Number.MAX_SAFE_INTEGER), <b>useCurrentDir</b>: (optional, if true the path is relative to current Deno working directory, default true));
 
+Ex: .post("/upload", uploadMiddleware('uploads'), async (context: any, next: any) => { ...
+
 Ex: .post("/upload", uploadMiddleware('uploads', ['jpg','png'], 20000000, true), async (context: any, next: any) => { ...
 
 Uploads will be in context.uploadedFiles;
