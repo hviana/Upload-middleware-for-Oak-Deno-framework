@@ -44,3 +44,8 @@ import { uploadMiddleware } from "https://deno.land/x/upload_middleware_for_oak_
 		"url":"uploads/2020/4/4/16/58/43/3a50bf12-6e40-4459-a0c0-52f913e1850e/download.png"
 	}
 }
+
+if you want, you can delete a file sent using:
+await Deno.remove(`${Deno.cwd()}/${context.uploadedFiles['file2']['url']}`);
+or
+await Deno.remove(context.uploadedFiles['file2']['url']});
