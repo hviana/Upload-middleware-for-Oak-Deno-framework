@@ -4,7 +4,7 @@ const uploadMiddleware = function (
   path: string,
   extensions: Array<string> = [],
   maxSizeBytes: number = Number.MAX_SAFE_INTEGER,
-  userCurrentDir: boolean = true,
+  useCurrentDir: boolean = true,
 ) {
   return async function (context: any, next: any) {
     if (
@@ -62,7 +62,7 @@ const uploadMiddleware = function (
           const uploadPath =
             (`${path}/${d.getFullYear()}/${d.getMonth()}/${d.getDay()}/${d.getHours()}/${d.getMinutes()}/${d.getSeconds()}/${uuid}`);
           let fullPath = uploadPath;
-          if (userCurrentDir) {
+          if (useCurrentDir) {
             fullPath = `${Deno.cwd()}/${fullPath}`;
           }
           await ensureDir(fullPath);
