@@ -44,8 +44,8 @@ Request must contains a body with form with enctype="multipart/form-data", and i
 <p>}</p>
 
 If you want, you can delete a file sent using (if useCurrentDir = true):
-	await Deno.remove(`${Deno.cwd()}/${context.uploadedFiles['file2']['url']}`);
+&nbsp;await Deno.remove(`${Deno.cwd()}/${context.uploadedFiles['file2']['url']}`);
 Or possibly:
-	await Deno.remove(context.uploadedFiles['file2']['url']});
+&nbsp;await Deno.remove(context.uploadedFiles['file2']['url']});
 Remember that you need permissions:
-	deno run --allow-net --allow-read --allow-write ./server.ts
+&nbsp;deno run --allow-net --allow-read --allow-write ./server.ts
