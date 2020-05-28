@@ -33,18 +33,20 @@ import { uploadMiddleware } from "https://deno.land/x/upload_middleware_for_oak_
   )
 
   This will return something like:
-  {
+{
 	"file1":{
 		"filename":"test.jpg",
 		"type":"image/jpeg",
 		"size":16980,
-		"url":"uploads/2020/4/4/16/58/43/b16dfb0a-b8b9-4ed3-8c96-2e0a946101fb/test.jpg"
+		"url":"uploads/2020/4/4/20/0/28/1350065e-7053-429b-869b-08008a098b23/test.jpg",
+		"uri":"C:\\Users\\Engenharia\\Documents\\base/uploads/2020/4/4/20/0/28/1350065e-7053-429b-869b-08008a098b23/test.jpg"
 	},
 	"file2":{
 		"filename":"download.png",
 		"type":"image/png",
 		"size":2623,
-		"url":"uploads/2020/4/4/16/58/43/3a50bf12-6e40-4459-a0c0-52f913e1850e/download.png"
+		"url":"uploads/2020/4/4/20/0/28/46698b10-d319-4bbb-af64-fc8b2b991b54/download.png",
+		"uri":"C:\\Users\\Engenharia\\Documents\\base/uploads/2020/4/4/20/0/28/46698b10-d319-4bbb-af64-fc8b2b991b54/download.png"
 	}
 }
 
