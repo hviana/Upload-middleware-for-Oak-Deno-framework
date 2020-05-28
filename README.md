@@ -4,7 +4,7 @@
 uploadMiddleware(path, extensions: (optional ex: [jpg, png]), maxSizeBytes: (optional, max size in bytes));
 -path is relative to current Deno working directory folder.
 
-Uploads will be in context['uploadedFiles'];
+Uploads will be in context.uploadedFiles;
 
 This middleware automatically organizes uploads to avoid file system problems and create dirs if not exists, and optimizes ram usage when uploading large files using Deno standard libraries!
 
@@ -25,7 +25,7 @@ import { uploadMiddleware } from "https://deno.land/x/upload_middleware_for_oak_
 
   .post("/upload", <b>uploadMiddleware('uploads',['jpg','png'],20000000)</b>,
     async (context: any, next: any) => {
-      context.response.body = context['uploadedFiles'];
+      context.response.body = context.uploadedFiles;
     },
   )
 
