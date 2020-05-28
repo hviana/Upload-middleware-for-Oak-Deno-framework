@@ -15,11 +15,13 @@ Request must contains a body with form with enctype="multipart/form-data", and i
 
 var f = new FormData();
 
-files = document.querySelector("#yourform input[multiple]").files
+var name = document.querySelector("#yourform input[multiple]").getAttribute('name');
+
+var files = document.querySelector("#yourform input[multiple]").files
 
 .. in loop:
 
-f.append('filexxx', files[i]);
+f.append('name'+i, files[i]);
 
 send f with ajax..
 
