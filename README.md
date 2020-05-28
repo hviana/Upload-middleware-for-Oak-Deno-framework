@@ -9,7 +9,7 @@ Uploads will be in context['uploadedFiles'];
 This middleware automatically organizes uploads to avoid file system problems and create dirs if not exists, and optimizes ram usage when uploading large files using Deno standard libraries!
 
 ## Examples:
-  .get("/", async (context: any, next: any) => {
+  .get("/", async (context: any, next: any) => {\
     context.response.body = `
     <!DOCTYPE html>
       <html>
