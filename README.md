@@ -1,8 +1,7 @@
 # Upload middleware for Oak Deno framework
 
 ## Usage: 
-uploadMiddleware(path, extensions: (optional ex: [jpg, png]), maxSizeBytes: (optional, max size in bytes));
--path is relative to current Deno working directory folder.
+uploadMiddleware(path, extensions: (optional ex: [jpg, png]), maxSizeBytes: (optional, max size in bytes), userCurrentDir: (optional, if true the path is relative to current Deno working directory));
 
 Uploads will be in context.uploadedFiles;
 
@@ -23,7 +22,7 @@ import { uploadMiddleware } from "https://deno.land/x/upload_middleware_for_oak_
     `;
   })
 
-  .post("/upload", <b>uploadMiddleware('uploads',['jpg','png'],20000000)</b>,
+  .post("/upload", <b>uploadMiddleware('uploads',['jpg','png'], 20000000, true)</b>,
     async (context: any, next: any) => {
       context.response.body = context.uploadedFiles;
     },
@@ -45,7 +44,7 @@ import { uploadMiddleware } from "https://deno.land/x/upload_middleware_for_oak_
 	}
 }
 
-if you want, you can delete a file sent using:
+If you want, you can delete a file sent using (if userCurrentDir = true):
 await Deno.remove(`${Deno.cwd()}/${context.uploadedFiles['file2']['url']}`);
-or
+Or possibly:
 await Deno.remove(context.uploadedFiles['file2']['url']});
