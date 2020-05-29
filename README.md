@@ -9,6 +9,8 @@
 
 <b>maxSizeBytes</b>: optional, max total size in bytes for all files in form, default unlimited - Number.MAX_SAFE_INTEGER, 
 
+<b>maxFileSizeBytes</b>: optional, max size in bytes for each file in form, default unlimited - Number.MAX_SAFE_INTEGER, 
+
 <b>useCurrentDir</b>: optional, if true the path is relative to current Deno working directory, default true
 
 <b>)</b>, next middlewares ...
@@ -16,7 +18,7 @@
 Ex: 
 ```
 .post("/upload", uploadMiddleware('uploads'), async (context: any, next: any) => { ...
-.post("/upload", uploadMiddleware('uploads', ['jpg','png'], 20000000, true), async (context: any, next: any) => { ...
+.post("/upload", uploadMiddleware('uploads', ['jpg','png'], 20000000, 10000000, true), async (context: any, next: any) => { ...
 ```
 Uploads will be in <b>context.uploadedFiles</b>;
 
@@ -55,7 +57,7 @@ import { uploadMiddleware } from "https://deno.land/x/upload_middleware_for_oak_
     `;
   })
 
-  .post("/upload", uploadMiddleware('uploads', ['jpg','png'], 20000000, true),
+  .post("/upload", uploadMiddleware('uploads', ['jpg','png'], 20000000, 10000000, true),
     async (context: any, next: any) => {
       context.response.body = context.uploadedFiles;
     },
