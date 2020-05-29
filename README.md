@@ -1,7 +1,7 @@
 # Upload middleware for Oak Deno framework
 
 ## Usage: 
-<b>uploadMiddleware</b>(
+<b>uploadMiddleware(</b>
 
 <b>path</b>,
 
@@ -9,7 +9,9 @@
 
 <b>maxSizeBytes</b>: optional, max size in bytes, default unlimited - Number.MAX_SAFE_INTEGER, 
 
-<b>useCurrentDir</b>: optional, if true the path is relative to current Deno working directory, default true);
+<b>useCurrentDir</b>: optional, if true the path is relative to current Deno working directory, default true
+
+<b>)</b>, next middlewares ...
 
 Ex: 
 ```
