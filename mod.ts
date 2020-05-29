@@ -112,10 +112,8 @@ const preUploadValidateMiddleware = function (
     jsonData = jsonData["value"];
     let totalBytes = 0;
     let validatios = "";
-    console.log(jsonData);
     for (const iName in jsonData) {
       totalBytes += jsonData[iName].size;
-      console.log(jsonData[iName]);
       if (jsonData[iName].size > maxFileSizeBytes) {
         validatios += `Maximum file upload size exceeded, file: ${
           jsonData[iName].name
