@@ -58,7 +58,7 @@ const uploadMiddleware = function (
               }
               context.throw(
                 422,
-                `Maximum file upload size exceeded, file:${
+                `Maximum file upload size exceeded, file: ${
                   item[1].filename
                 }, size: ${item[1].size} bytes, maximum: ${maxFileSizeBytes} bytes.`,
               );
