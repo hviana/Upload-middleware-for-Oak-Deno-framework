@@ -26,15 +26,45 @@ This middleware automatically organizes uploads to avoid file system problems an
 
 Request must contains a body with form type "multipart/form-data", and inputs with type="file". 
 
+<b>preUploadValidateMiddleware(</b>
+
+<b>extensions</b>: optional ex: ['jpg', 'png'], default allow all - [], 
+
+<b>maxSizeBytes</b>: optional, max total size in bytes for all files in form, default unlimited - Number.MAX_SAFE_INTEGER, 
+
+<b>maxFileSizeBytes</b>: optional, max size in bytes for each file in form, default unlimited - Number.MAX_SAFE_INTEGER
+
+<b>)</b>, next middlewares ...
+
+This middleware does a pre-validation before sending the form, for optimizations. To use it, send a JSON containing the objects "file". Use a different route than the upload route. Returns a validation message with status 422 if there are errors.
+
+Ex: 
+```
+.post("/pre_upload", preUploadValidateMiddleware(["jpg", "png"], 20000000, 10000000), async (context: any, next: any) => { ...
+```
 ## Examples:
 Below an example to work with ajax, also accepting type="file" multiple (middleware works with an input for each file):
 ```
 var files = document.querySelector('#yourFormId input[type=file]').files
 var name = document.querySelector('#yourFormId input[type=file]').getAttribute('name');
-var f = new FormData();
+var form = new FormData();
+var validationData = {}
 for(var i=0;i<files.length;i++){
-	f.append(`${name}_${i}`, files[i]);	
+	form.append(`${name}_${i}`, files[i]);	
+	var newObj = { //newObj is needed, JSON.stringify(files[i]) not work
+	   'name'             : files[i].name,
+	   'size'             : files[i].size
+	}; 
+	validationData[`${name}_${i}`] = newObj;
 }
+
+var validations = await fetch('/pre_upload', {
+	method: 'POST',
+	headers: {'Content-Type': 'application/json'},
+	body: JSON.stringify(validationData),
+}).then(response=>response.json())
+console.log(validations)
+
 var res = await fetch('/upload', {
 	method: 'POST',
 	body: f,
@@ -61,6 +91,12 @@ import { uploadMiddleware } from "https://deno.land/x/upload_middleware_for_oak_
     async (context: any, next: any) => {
       context.response.body = context.uploadedFiles;
     },
+  )
+  
+   .post("/pre_upload", uploadMiddleware(["jpg", "png"], 20000000, 10000000),
+   async (context: any, next: any) => {
+     context.response.body = { msg: "Pass upload validations." };
+   },
   )
 
   This will return something like:
