@@ -26,7 +26,7 @@ f.append('name'+i, files[i]);
 send f with ajax..
 ```
 ## Examples:
-<pre>
+```
 import { uploadMiddleware } from "https://deno.land/x/upload_middleware_for_oak_framework/mod.ts";
 
   .get("/", async (context: any, next: any) => {
@@ -69,3 +69,4 @@ Or possibly:
     await Deno.remove(context.uploadedFiles['file2']['url']});
 Remember that you need permissions:
     deno run --allow-net --allow-read --allow-write ./server.ts
+```
