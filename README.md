@@ -22,8 +22,9 @@ Uploads will be in <b>context.uploadedFiles</b>;
 
 This middleware automatically organizes uploads to avoid file system problems and create dirs if not exists, and optimizes ram usage when uploading large files using Deno standard libraries!
 
-Request must contains a body with form with enctype="multipart/form-data", and inputs with type="file". 
+Request must contains a body with form type "multipart/form-data", and inputs with type="file". 
 
+## Examples:
 Below an example to work with ajax, with support for type="file" multiple (middleware works with an input for each file):
 ```
 var files = document.querySelector('#yourFormId input[type=file]').files
@@ -38,7 +39,9 @@ var res = await fetch('/upload', {
 }).then(response=>response.json())
 console.log(res)
 ```
-## Examples:
+Fetch API automatically puts the form in the format "multipart/form-data".
+
+In Deno:
 ```
 import { uploadMiddleware } from "https://deno.land/x/upload_middleware_for_oak_framework/mod.ts";
 
