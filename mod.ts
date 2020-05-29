@@ -120,7 +120,8 @@ const preUploadValidateMiddleware = function (
         validatios += `Maximum file upload size exceeded, file: ${
           jsonData[iName].name
         }, size: ${jsonData[iName].size} bytes, maximum: ${maxFileSizeBytes} bytes. `;
-      } else if (!extensions.includes(jsonData[iName].name.split(".").pop())) {
+      }
+      if (!extensions.includes(jsonData[iName].name.split(".").pop())) {
         validatios += `The file extension is not allowed (${
           jsonData[iName].name.split(".").pop()
         } in ${jsonData[iName].name}). Allowed extensions: ${extensions}. `;
