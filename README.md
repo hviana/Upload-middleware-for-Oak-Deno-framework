@@ -65,14 +65,12 @@ var validations = await fetch('/pre_upload', {
 }).then(response=>response.json())
 console.log(validations)
 
-var res = await fetch('/upload', {
+var res = await fetch('/upload', { //Fetch API automatically puts the form in the format "multipart/form-data".
 	method: 'POST',
 	body: f,
 }).then(response=>response.json())
 console.log(res)
 ```
-Fetch API automatically puts the form in the format "multipart/form-data".
-
 In Deno:
 ```
 import { uploadMiddleware, preUploadValidateMiddleware } from "https://deno.land/x/upload_middleware_for_oak_framework/mod.ts";
