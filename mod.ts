@@ -4,6 +4,7 @@ const uploadMiddleware = function (
   path: string,
   extensions: Array<string> = [],
   maxSizeBytes: number = Number.MAX_SAFE_INTEGER,
+  maxFileSizeBytes: number = Number.MAX_SAFE_INTEGER,
   useCurrentDir: boolean = true,
 ) {
   return async function (context: any, next: any) {
@@ -12,7 +13,7 @@ const uploadMiddleware = function (
     ) {
       context.throw(
         422,
-        `Maximum upload size exceeded, maximum: ${maxSizeBytes} bytes.`,
+        `Maximum total upload size exceeded, maximum: ${maxSizeBytes} bytes.`,
       );
       next();
     }
@@ -47,6 +48,19 @@ const uploadMiddleware = function (
                 `The file extension is not allowed (${ext} in ${
                   item[1].filename
                 }). Allowed extensions: ${extensions}.`,
+              );
+              next();
+            } else if (item[1].size > maxFileSizeBytes) {
+              for (const delItem of entries) {
+                if (delItem[1].tempfile != undefined) {
+                  await Deno.remove(delItem[1].tempfile);
+                }
+              }
+              context.throw(
+                422,
+                `Maximum file upload size exceeded, file:${
+                  item[1].filename
+                }, maximum: ${maxFileSizeBytes} bytes.`,
               );
               next();
             }
