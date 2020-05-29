@@ -18,7 +18,7 @@ Ex:
 .post("/upload", uploadMiddleware('uploads'), async (context: any, next: any) => { ...
 .post("/upload", uploadMiddleware('uploads', ['jpg','png'], 20000000, true), async (context: any, next: any) => { ...
 ```
-Uploads will be in <bcontext.uploadedFiles</b>;
+Uploads will be in <b>context.uploadedFiles</b>;
 
 This middleware automatically organizes uploads to avoid file system problems and create dirs if not exists, and optimizes ram usage when uploading large files using Deno standard libraries!
 
