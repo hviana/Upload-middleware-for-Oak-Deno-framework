@@ -128,7 +128,7 @@ const preUploadValidateMiddleware = function (
     }
     if (totalBytes > maxSizeBytes) {
       validatios += `Maximum total upload size exceeded, size: ${
-        context.request.headers.get("content-length")
+        totalBytes
       } bytes, maximum: ${maxSizeBytes} bytes. `;
     }
     if (validatios != "") {
