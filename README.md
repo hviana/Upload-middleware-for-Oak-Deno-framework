@@ -25,7 +25,7 @@ This middleware automatically organizes uploads to avoid file system problems an
 Request must contains a body with form type "multipart/form-data", and inputs with type="file". 
 
 ## Examples:
-Below an example to work with ajax, with support for type="file" multiple (middleware works with an input for each file):
+Below an example to work with ajax, also accepting type="file" multiple (middleware works with an input for each file):
 ```
 var files = document.querySelector('#yourFormId input[type=file]').files
 var name = document.querySelector('#yourFormId input[type=file]').getAttribute('name');
