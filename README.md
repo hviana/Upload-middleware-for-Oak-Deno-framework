@@ -7,7 +7,7 @@
 
 <b>extensions</b>: optional ex: ['jpg', 'png'], default allow all - [], 
 
-<b>maxSizeBytes</b>: optional, max size in bytes, default unlimited - Number.MAX_SAFE_INTEGER, 
+<b>maxSizeBytes</b>: optional, total size in bytes for all files in form, default unlimited - Number.MAX_SAFE_INTEGER, 
 
 <b>useCurrentDir</b>: optional, if true the path is relative to current Deno working directory, default true
 
