@@ -1,12 +1,17 @@
 # Upload middleware for Oak Deno framework
 
 ## Usage: 
-<b>uploadMiddleware</b>(<b>path</b>, <b>extensions</b>: (optional ex: ['jpg', 'png'], default allow all - []), <b>maxSizeBytes</b>: (optional, max size in bytes, default unlimited - Number.MAX_SAFE_INTEGER), <b>useCurrentDir</b>: (optional, if true the path is relative to current Deno working directory, default true));
+<b>uploadMiddleware</b>(
+<b>path</b>,
+<b>extensions</b>: optional ex: ['jpg', 'png'], default allow all - [], 
+<b>maxSizeBytes</b>: optional, max size in bytes, default unlimited - Number.MAX_SAFE_INTEGER, 
+<b>useCurrentDir</b>: optional, if true the path is relative to current Deno working directory, default true);
 
-Ex: .post("/upload", uploadMiddleware('uploads'), async (context: any, next: any) => { ...
-
-Ex: .post("/upload", uploadMiddleware('uploads', ['jpg','png'], 20000000, true), async (context: any, next: any) => { ...
-
+Ex: 
+```
+.post("/upload", uploadMiddleware('uploads'), async (context: any, next: any) => { ...
+.post("/upload", uploadMiddleware('uploads', ['jpg','png'], 20000000, true), async (context: any, next: any) => { ...
+```
 Uploads will be in context.uploadedFiles;
 
 This middleware automatically organizes uploads to avoid file system problems and create dirs if not exists, and optimizes ram usage when uploading large files using Deno standard libraries!
@@ -62,11 +67,10 @@ import { uploadMiddleware } from "https://deno.land/x/upload_middleware_for_oak_
 		"uri":"C:\\Users\\Engenharia\\Documents\\base/uploads/2020/4/4/20/0/28/46698b10-d319-4bbb-af64-fc8b2b991b54/download.png"
 	}
 }
-
-If you want, you can delete a file sent using (if useCurrentDir = true):
-    await Deno.remove(`${Deno.cwd()}/${context.uploadedFiles['file2']['url']}`);
-Or possibly:
-    await Deno.remove(context.uploadedFiles['file2']['url']});
-Remember that you need permissions:
-    deno run --allow-net --allow-read --allow-write ./server.ts
 ```
+If you want, you can delete a file sent using (if useCurrentDir = true):
+```await Deno.remove(`${Deno.cwd()}/${context.uploadedFiles['file2']['url']}`);```
+Or possibly:
+```await Deno.remove(context.uploadedFiles['file2']['url']});```
+Remember that you need permissions:
+```deno run --allow-net --allow-read --allow-write ./server.ts```
