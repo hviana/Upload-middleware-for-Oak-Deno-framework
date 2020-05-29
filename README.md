@@ -47,11 +47,11 @@ import { uploadMiddleware } from "https://deno.land/x/upload_middleware_for_oak_
 
   .get("/", async (context: any, next: any) => {
     context.response.body = `
-            form enctype="multipart/form-data" action="/upload" method="post"
-              input type="file" name="file1"
-              input type="file" name="file2"
-              input type="submit" value="Submit"
-            form
+            <form id="yourFormId" enctype="multipart/form-data" action="/upload" method="post">
+              <input type="file" name="file1" multiple><br>
+              <input type="file" name="file2"><br>
+              <input type="submit" value="Submit">
+            </form>
     `;
   })
 
