@@ -67,13 +67,9 @@ import { uploadMiddleware } from "https://deno.land/x/upload_middleware_for_oak_
 	}
 }
 ```
-If you want, you can delete a file sent using (if useCurrentDir = true):
+If you want, you can delete a file sent using:
 ```
-await Deno.remove(`${Deno.cwd()}/${context.uploadedFiles['file2']['url']}`);
-```
-Or possibly:
-```
-await Deno.remove(context.uploadedFiles['file2']['url']});
+await Deno.remove(context.uploadedFiles['file2']['uri']});
 ```
 Remember that you need permissions:
 ```
