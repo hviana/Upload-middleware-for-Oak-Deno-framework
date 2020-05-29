@@ -13,7 +13,7 @@ const uploadMiddleware = function (
     ) {
       context.throw(
         422,
-        `Maximum total upload size exceeded, maximum: ${maxSizeBytes} bytes.`,
+        `Maximum total upload size exceeded, size: ${context.request.headers.get("content-length")} bytes, maximum: ${maxSizeBytes} bytes.`,
       );
       next();
     }
@@ -60,7 +60,7 @@ const uploadMiddleware = function (
                 422,
                 `Maximum file upload size exceeded, file:${
                   item[1].filename
-                }, maximum: ${maxFileSizeBytes} bytes.`,
+                }, size: ${item[1].size} bytes, maximum: ${maxFileSizeBytes} bytes.`,
               );
               next();
             }
