@@ -122,7 +122,7 @@ const preUploadValidateMiddleware = function (
       if (!extensions.includes(jsonData[iName].name.split(".").pop())) {
         validatios += `The file extension is not allowed (${
           jsonData[iName].name.split(".").pop()
-        } in ${jsonData[iName].name}). Allowed extensions: ${extensions}. `;
+        } in ${jsonData[iName].name}), allowed extensions: ${extensions}. `;
       }
     }
     if (totalBytes > maxSizeBytes) {
