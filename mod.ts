@@ -102,4 +102,39 @@ const uploadMiddleware = function (
     next();
   };
 };
-export { uploadMiddleware };
+const preUploadValidateMiddleware = function (
+  extensions: Array<string> = [],
+  maxSizeBytes: number = Number.MAX_SAFE_INTEGER,
+  maxFileSizeBytes: number = Number.MAX_SAFE_INTEGER,
+) {
+  return async (context: any, next: any) => {
+    let jsonData = await context.request.body();
+    jsonData = jsonData["value"];
+    let totalBytes = 0;
+    let validatios = "";
+    console.log(jsonData);
+    for (const iName in jsonData) {
+      totalBytes += jsonData[iName].size;
+      console.log(jsonData[iName]);
+      if (jsonData[iName].size > maxFileSizeBytes) {
+        validatios += `Maximum total upload size exceeded, size: ${
+          context.request.headers.get("content-length")
+        } bytes, maximum: ${maxSizeBytes} bytes. `;
+      } else if (!extensions.includes(jsonData[iName].name.split(".").pop())) {
+        validatios += `The file extension is not allowed (${
+          jsonData[iName].name.split(".").pop()
+        } in ${jsonData[iName].name}). Allowed extensions: ${extensions}. `;
+      }
+    }
+    if (totalBytes > maxSizeBytes) {
+      validatios += `Maximum total upload size exceeded, size: ${
+        context.request.headers.get("content-length")
+      } bytes, maximum: ${maxSizeBytes} bytes. `;
+    }
+    if (validatios != "") {
+      context.throw(422, validatios);
+    }
+    next();
+  };
+};
+export { uploadMiddleware, preUploadValidateMiddleware };
