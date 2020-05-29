@@ -55,7 +55,7 @@ import { uploadMiddleware } from "https://deno.land/x/upload_middleware_for_oak_
     `;
   })
 
-  .post("/upload", <b>uploadMiddleware('uploads', ['jpg','png'], 20000000, true)</b>,
+  .post("/upload", uploadMiddleware('uploads', ['jpg','png'], 20000000, true),
     async (context: any, next: any) => {
       context.response.body = context.uploadedFiles;
     },
