@@ -2,9 +2,13 @@
 
 ## Usage: 
 <b>uploadMiddleware</b>(
+
 <b>path</b>,
+
 <b>extensions</b>: optional ex: ['jpg', 'png'], default allow all - [], 
+
 <b>maxSizeBytes</b>: optional, max size in bytes, default unlimited - Number.MAX_SAFE_INTEGER, 
+
 <b>useCurrentDir</b>: optional, if true the path is relative to current Deno working directory, default true);
 
 Ex: 
@@ -69,8 +73,13 @@ import { uploadMiddleware } from "https://deno.land/x/upload_middleware_for_oak_
 }
 ```
 If you want, you can delete a file sent using (if useCurrentDir = true):
+
 ```await Deno.remove(`${Deno.cwd()}/${context.uploadedFiles['file2']['url']}`);```
+
 Or possibly:
+
 ```await Deno.remove(context.uploadedFiles['file2']['url']});```
+
 Remember that you need permissions:
+
 ```deno run --allow-net --allow-read --allow-write ./server.ts```
