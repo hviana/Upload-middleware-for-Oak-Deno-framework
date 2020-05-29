@@ -31,7 +31,7 @@ var files = document.querySelector('#yourFormId input[type=file]').files
 var name = document.querySelector('#yourFormId input[type=file]').getAttribute('name');
 var f = new FormData();
 for(var i=0;i<files.length;i++){
-	f.append(name+i, files[i]);	
+	f.append(`${name}_${i}`, files[i]);	
 }
 var res = await fetch('/upload', {
 	method: 'POST',
