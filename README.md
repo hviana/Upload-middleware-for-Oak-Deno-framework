@@ -23,15 +23,10 @@ This middleware automatically organizes uploads to avoid file system problems an
 Request must contains a body with form with enctype="multipart/form-data", and inputs with type="file". For a while, it does not support input with multiple attribute, but you can work around this in javascript with something like this:
 ```
 var f = new FormData();
-
 var name = document.querySelector("#yourform input[multiple]").getAttribute('name');
-
 var files = document.querySelector("#yourform input[multiple]").files
-
 .. in loop:
-
 f.append('name'+i, files[i]);
-
 send f with ajax..
 ```
 ## Examples:
