@@ -22,10 +22,12 @@ Uploads will be in <b>context.uploadedFiles</b>;
 
 This middleware automatically organizes uploads to avoid file system problems and create dirs if not exists, and optimizes ram usage when uploading large files using Deno standard libraries!
 
-Request must contains a body with form with enctype="multipart/form-data", and inputs with type="file". For a type="file" with multiple attribute, you need in front:
+Request must contains a body with form with enctype="multipart/form-data", and inputs with type="file". 
+
+Below an example to work with ajax, with support for multiple input (middleware works with an input for each file):
 ```
-var files = document.querySelector('#yourFormId input[type=file][multiple]').files
-var name = document.querySelector('#yourFormId input[type=file][multiple]').getAttribute('name');
+var files = document.querySelector('#yourFormId input[type=file]').files
+var name = document.querySelector('#yourFormId input[type=file]').getAttribute('name');
 var f = new FormData();
 for(var i=0;i<files.length;i++){
 	f.append(name+i, files[i]);	
