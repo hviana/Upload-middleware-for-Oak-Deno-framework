@@ -75,7 +75,7 @@ Fetch API automatically puts the form in the format "multipart/form-data".
 
 In Deno:
 ```
-import { uploadMiddleware } from "https://deno.land/x/upload_middleware_for_oak_framework/mod.ts";
+import { uploadMiddleware, preUploadValidateMiddleware } from "https://deno.land/x/upload_middleware_for_oak_framework/mod.ts";
 
   .get("/", async (context: any, next: any) => {
     context.response.body = `
