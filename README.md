@@ -35,7 +35,7 @@ Request must contains a body with form type "multipart/form-data", and inputs wi
 
 <b>)</b>, next middlewares ...
 
-This middleware does a pre-validation before sending the form, for optimizations. To use it, send a JSON containing the objects "file". Use a different route than the upload route. Returns a validation message with status 422 if there are errors.
+This middleware does a pre-validation before sending the form, for optimizations. To use it, send a JSON containing the objects "file". Use a different route than the upload route. Returns a validation message with all errors and status 422 (if there are errors).
 
 Ex: 
 ```javascript
