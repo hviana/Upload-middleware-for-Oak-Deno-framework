@@ -2,6 +2,11 @@
 This middleware automatically organizes uploads to avoid file system problems and create dirs if not exists, perform validations and optimizes ram usage when uploading large files using Deno standard libraries!
 
 ## Usage: 
+Ex: 
+```javascript
+.post("/upload", upload('uploads'), async (context: any, next: any) => { ...
+.post("/upload", upload('uploads', ['jpg','png'], 20000000, 10000000, true), async (context: any, next: any) => { ...
+```
 <b>upload(</b>
 
 <b>path</b>,
@@ -16,15 +21,13 @@ This middleware automatically organizes uploads to avoid file system problems an
 
 <b>)</b>, next middlewares ...
 
-Ex: 
-```javascript
-.post("/upload", upload('uploads'), async (context: any, next: any) => { ...
-.post("/upload", upload('uploads', ['jpg','png'], 20000000, 10000000, true), async (context: any, next: any) => { ...
-```
 Uploads will be in <b>context.uploadedFiles</b>;
 
 Request must contains a body with form type "multipart/form-data", and inputs with type="file". 
-
+Ex: 
+```javascript
+.post("/pre_upload", preUploadValidate(["jpg", "png"], 20000000, 10000000), async (context: any, next: any) => { ...
+```
 <b>preUploadValidate(</b>
 
 <b>extensions</b>: optional ex: ['jpg', 'png'], default allow all - [], 
@@ -37,10 +40,6 @@ Request must contains a body with form type "multipart/form-data", and inputs wi
 
 This middleware does a pre-validation before sending the form, for optimizations. To use it, send a JSON containing the objects "file". Use a different route than the upload route. Returns a validation message with all errors and status 422 (if there are errors).
 
-Ex: 
-```javascript
-.post("/pre_upload", preUploadValidate(["jpg", "png"], 20000000, 10000000), async (context: any, next: any) => { ...
-```
 ## Examples:
 Below an example to work with <b>AJAX</b>, also accepting type="file" <b>multiple</b> (middleware works with an input for each file):
 ```javascript
