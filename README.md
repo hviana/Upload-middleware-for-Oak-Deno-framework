@@ -39,7 +39,7 @@ Request must contains a body with form type "multipart/form-data", and inputs wi
 This middleware does a pre-validation before sending the form, for optimizations. To use it, send a JSON containing the objects "file". Use a different route than the upload route. Returns a validation message with status 422 if there are errors.
 
 Ex: 
-```
+```javascript
 .post("/pre_upload", preUploadValidateMiddleware(["jpg", "png"], 20000000, 10000000), async (context: any, next: any) => { ...
 ```
 ## Examples:
