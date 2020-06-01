@@ -1,6 +1,6 @@
 import { ensureDir, v4, MultipartReader, move } from "./deps.ts";
 
-const uploadMiddleware = function (
+const upload = function (
   path: string,
   extensions: Array<string> = [],
   maxSizeBytes: number = Number.MAX_SAFE_INTEGER,
@@ -102,7 +102,7 @@ const uploadMiddleware = function (
     next();
   };
 };
-const preUploadValidateMiddleware = function (
+const preUploadValidate = function (
   extensions: Array<string> = [],
   maxSizeBytes: number = Number.MAX_SAFE_INTEGER,
   maxFileSizeBytes: number = Number.MAX_SAFE_INTEGER,
@@ -136,4 +136,4 @@ const preUploadValidateMiddleware = function (
     next();
   };
 };
-export { uploadMiddleware, preUploadValidateMiddleware };
+export { upload, preUploadValidate };
