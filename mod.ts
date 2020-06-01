@@ -1,4 +1,5 @@
-import { ensureDir, v4, MultipartReader, move } from "./deps.ts";
+import { ensureDir, v4, move } from "./deps.ts";
+import { MultipartReader } from "../std/mime/multipart.ts";
 
 const upload = function (
   path: string,
@@ -13,7 +14,9 @@ const upload = function (
     ) {
       context.throw(
         422,
-        `Maximum total upload size exceeded, size: ${context.request.headers.get("content-length")} bytes, maximum: ${maxSizeBytes} bytes.`,
+        `Maximum total upload size exceeded, size: ${
+          context.request.headers.get("content-length")
+        } bytes, maximum: ${maxSizeBytes} bytes.`,
       );
       next();
     }
@@ -34,62 +37,78 @@ const upload = function (
       let res: any = {};
       let entries: any = Array.from(form.entries());
       for (const item of entries) {
-        if (item[1].filename != undefined) {
-          if (extensions.length > 0) {
-            let ext = item[1].filename.split(".").pop();
-            if (!extensions.includes(ext)) {
-              for (const delItem of entries) {
-                if (delItem[1].tempfile != undefined) {
-                  await Deno.remove(delItem[1].tempfile);
+        let values: any = [].concat(item[1]);
+        for (const val of values) {
+          if (val.filename != undefined) {
+            if (extensions.length > 0) {
+              let ext = val.filename.split(".").pop();
+              if (!extensions.includes(ext)) {
+                for (const delItem of entries) {
+                  let delValues: any = [].concat(delItem[1]);
+                  for (const delVal of delValues) {
+                    if (delVal.tempfile != undefined) {
+                      await Deno.remove(delVal.tempfile);
+                    }
+                  }
                 }
-              }
-              context.throw(
-                422,
-                `The file extension is not allowed (${ext} in ${
-                  item[1].filename
-                }). Allowed extensions: ${extensions}.`,
-              );
-              next();
-            } else if (item[1].size > maxFileSizeBytes) {
-              for (const delItem of entries) {
-                if (delItem[1].tempfile != undefined) {
-                  await Deno.remove(delItem[1].tempfile);
+                context.throw(
+                  422,
+                  `The file extension is not allowed (${ext} in ${val.filename}). Allowed extensions: ${extensions}.`,
+                );
+                next();
+              } else if (val.size > maxFileSizeBytes) {
+                for (const delItem of entries) {
+                  let delValues: any = [].concat(delItem[1]);
+                  for (const delVal of delValues) {
+                    if (delVal.tempfile != undefined) {
+                      await Deno.remove(delVal.tempfile);
+                    }
+                  }
                 }
+                context.throw(
+                  422,
+                  `Maximum file upload size exceeded, file: ${val.filename}, size: ${val.size} bytes, maximum: ${maxFileSizeBytes} bytes.`,
+                );
+                next();
               }
-              context.throw(
-                422,
-                `Maximum file upload size exceeded, file: ${
-                  item[1].filename
-                }, size: ${item[1].size} bytes, maximum: ${maxFileSizeBytes} bytes.`,
-              );
-              next();
             }
           }
         }
       }
       for (const item of entries) {
-        let fileData: any = item[1];
-        let formField = item[0];
-        if (fileData.tempfile != undefined) {
-          const uuid = v4.generate(); //TODO improve to use of v5
-          const d = new Date();
-          const uploadPath =
-            (`${path}/${d.getFullYear()}/${d.getMonth()}/${d.getDay()}/${d.getHours()}/${d.getMinutes()}/${d.getSeconds()}/${uuid}`);
-          let fullPath = uploadPath;
-          if (useCurrentDir) {
-            fullPath = `${Deno.cwd()}/${fullPath}`;
+        let formField: any = item[0];
+        let filesData: any = [].concat(item[1]);
+        for (const fileData of filesData) {
+          if (fileData.tempfile != undefined) {
+            const uuid = v4.generate(); //TODO improve to use of v5
+            const d = new Date();
+            const uploadPath =
+              (`${path}/${d.getFullYear()}/${d.getMonth()}/${d.getDay()}/${d.getHours()}/${d.getMinutes()}/${d.getSeconds()}/${uuid}`);
+            let fullPath = uploadPath;
+            if (useCurrentDir) {
+              fullPath = `${Deno.cwd()}/${fullPath}`;
+            }
+            await ensureDir(fullPath);
+            await move(
+              fileData.tempfile,
+              `${fullPath}/${fileData.filename}`,
+            );
+            let resData = fileData;
+            delete resData["tempfile"];
+            resData["url"] = encodeURI(
+              `${uploadPath}/${fileData.filename}`,
+            );
+            resData["uri"] = `${fullPath}/${fileData.filename}`;
+            if (res[formField] !== undefined) {
+              if (Array.isArray(res[formField])) {
+                res[formField].push(resData);
+              } else {
+                res[formField] = [res[formField], resData];
+              }
+            } else {
+              res[formField] = resData;
+            }
           }
-          await ensureDir(fullPath);
-          await move(
-            fileData.tempfile,
-            `${fullPath}/${fileData.filename}`,
-          );
-          res[formField] = fileData;
-          delete res[formField]["tempfile"];
-          res[formField]["url"] = encodeURI(
-            `${uploadPath}/${fileData.filename}`,
-          );
-          res[formField]["uri"] = `${fullPath}/${fileData.filename}`;
         }
       }
       context["uploadedFiles"] = res;
@@ -113,22 +132,23 @@ const preUploadValidate = function (
     let totalBytes = 0;
     let validatios = "";
     for (const iName in jsonData) {
-      totalBytes += jsonData[iName].size;
-      if (jsonData[iName].size > maxFileSizeBytes) {
-        validatios += `Maximum file upload size exceeded, file: ${
-          jsonData[iName].name
-        }, size: ${jsonData[iName].size} bytes, maximum: ${maxFileSizeBytes} bytes. `;
+      let files: any = [].concat(jsonData[iName]);
+      for (const file of files) {
+        totalBytes += jsonData[iName].size;
+        if (file.size > maxFileSizeBytes) {
+          validatios +=
+            `Maximum file upload size exceeded, file: ${file.name}, size: ${file.size} bytes, maximum: ${maxFileSizeBytes} bytes. `;
+        }
+        if (!extensions.includes(file.name.split(".").pop())) {
+          validatios += `The file extension is not allowed (${
+            file.name.split(".").pop()
+          } in ${file.name}), allowed extensions: ${extensions}. `;
+        }
       }
-      if (!extensions.includes(jsonData[iName].name.split(".").pop())) {
-        validatios += `The file extension is not allowed (${
-          jsonData[iName].name.split(".").pop()
-        } in ${jsonData[iName].name}), allowed extensions: ${extensions}. `;
+      if (totalBytes > maxSizeBytes) {
+        validatios +=
+          `Maximum total upload size exceeded, size: ${totalBytes} bytes, maximum: ${maxSizeBytes} bytes. `;
       }
-    }
-    if (totalBytes > maxSizeBytes) {
-      validatios += `Maximum total upload size exceeded, size: ${
-        totalBytes
-      } bytes, maximum: ${maxSizeBytes} bytes. `;
     }
     if (validatios != "") {
       context.throw(422, validatios);
