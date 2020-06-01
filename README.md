@@ -53,7 +53,7 @@ for(var i=0;i<files.length;i++){
 }
 var res = await fetch('/upload', { //Fetch API automatically puts the form in the format "multipart/form-data".
 	method: 'POST',
-	body: f,
+	body: form,
 }).then(response=>response.json())
 console.log(res)
 
