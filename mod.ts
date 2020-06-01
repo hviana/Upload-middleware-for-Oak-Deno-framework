@@ -43,28 +43,14 @@ const upload = function (
             if (extensions.length > 0) {
               let ext = val.filename.split(".").pop();
               if (!extensions.includes(ext)) {
-                for (const delItem of entries) {
-                  let delValues: any = [].concat(delItem[1]);
-                  for (const delVal of delValues) {
-                    if (delVal.tempfile != undefined) {
-                      await Deno.remove(delVal.tempfile);
-                    }
-                  }
-                }
+                form.removeAll();
                 context.throw(
                   422,
                   `The file extension is not allowed (${ext} in ${val.filename}). Allowed extensions: ${extensions}.`,
                 );
                 next();
               } else if (val.size > maxFileSizeBytes) {
-                for (const delItem of entries) {
-                  let delValues: any = [].concat(delItem[1]);
-                  for (const delVal of delValues) {
-                    if (delVal.tempfile != undefined) {
-                      await Deno.remove(delVal.tempfile);
-                    }
-                  }
-                }
+                form.removeAll();
                 context.throw(
                   422,
                   `Maximum file upload size exceeded, file: ${val.filename}, size: ${val.size} bytes, maximum: ${maxFileSizeBytes} bytes.`,
