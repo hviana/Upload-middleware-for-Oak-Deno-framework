@@ -24,6 +24,7 @@ Ex:
 Uploads will be in <b>context.uploadedFiles</b>;
 
 Request must contains a body with form type "multipart/form-data", and inputs with type="file". 
+
 Ex: 
 ```javascript
 .post("/pre_upload", preUploadValidate(["jpg", "png"], 20000000, 10000000), async (context: any, next: any) => { ...
