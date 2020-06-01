@@ -1,4 +1,5 @@
 # Upload middleware for Oak Deno framework
+This middleware automatically organizes uploads to avoid file system problems and create dirs if not exists, perform validations and optimizes ram usage when uploading large files using Deno standard libraries!
 
 ## Usage: 
 <b>upload(</b>
@@ -21,8 +22,6 @@ Ex:
 .post("/upload", upload('uploads', ['jpg','png'], 20000000, 10000000, true), async (context: any, next: any) => { ...
 ```
 Uploads will be in <b>context.uploadedFiles</b>;
-
-This middleware automatically organizes uploads to avoid file system problems and create dirs if not exists, and optimizes ram usage when uploading large files using Deno standard libraries!
 
 Request must contains a body with form type "multipart/form-data", and inputs with type="file". 
 
