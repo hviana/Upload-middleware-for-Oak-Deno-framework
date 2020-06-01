@@ -100,7 +100,7 @@ import { uploadMiddleware, preUploadValidateMiddleware } from "https://deno.land
    },
   )
 
-  This will return something like:
+  //This will return something like:
 {
 	"file1_0":{
 		"filename":"test.jpg",
