@@ -1,7 +1,7 @@
 # Upload middleware for Oak Deno framework
 
 ## Usage: 
-<b>uploadMiddleware(</b>
+<b>upload(</b>
 
 <b>path</b>,
 
@@ -17,8 +17,8 @@
 
 Ex: 
 ```javascript
-.post("/upload", uploadMiddleware('uploads'), async (context: any, next: any) => { ...
-.post("/upload", uploadMiddleware('uploads', ['jpg','png'], 20000000, 10000000, true), async (context: any, next: any) => { ...
+.post("/upload", upload('uploads'), async (context: any, next: any) => { ...
+.post("/upload", upload('uploads', ['jpg','png'], 20000000, 10000000, true), async (context: any, next: any) => { ...
 ```
 Uploads will be in <b>context.uploadedFiles</b>;
 
@@ -26,7 +26,7 @@ This middleware automatically organizes uploads to avoid file system problems an
 
 Request must contains a body with form type "multipart/form-data", and inputs with type="file". 
 
-<b>preUploadValidateMiddleware(</b>
+<b>preUploadValidate(</b>
 
 <b>extensions</b>: optional ex: ['jpg', 'png'], default allow all - [], 
 
@@ -40,7 +40,7 @@ This middleware does a pre-validation before sending the form, for optimizations
 
 Ex: 
 ```javascript
-.post("/pre_upload", preUploadValidateMiddleware(["jpg", "png"], 20000000, 10000000), async (context: any, next: any) => { ...
+.post("/pre_upload", preUploadValidate(["jpg", "png"], 20000000, 10000000), async (context: any, next: any) => { ...
 ```
 ## Examples:
 Below an example to work with ajax, also accepting type="file" multiple (middleware works with an input for each file):
@@ -76,8 +76,18 @@ console.log(validations)
 ```
 In Deno:
 ```javascript
-import { uploadMiddleware, preUploadValidateMiddleware } from "https://deno.land/x/upload_middleware_for_oak_framework/mod.ts";
+import { upload, preUploadValidate} from "https://deno.land/x/upload_middleware_for_oak_framework/mod.ts";
 
+  .post("/upload", upload('uploads', ['jpg','png'], 20000000, 10000000, true),
+    async (context: any, next: any) => {
+      context.response.body = context.uploadedFiles;
+    },
+  )
+  .post("/pre_upload", preUploadValidate(["jpg", "png"], 20000000, 10000000),
+    async (context: any, next: any) => {
+     context.response.body = { msg: "Pass upload validations." };
+   },
+  )
   .get("/", async (context: any, next: any) => {
     context.response.body = `
             <form id="yourFormId" enctype="multipart/form-data" action="/upload" method="post">
@@ -87,19 +97,6 @@ import { uploadMiddleware, preUploadValidateMiddleware } from "https://deno.land
             </form>
     `;
   })
-
-  .post("/upload", uploadMiddleware('uploads', ['jpg','png'], 20000000, 10000000, true),
-    async (context: any, next: any) => {
-      context.response.body = context.uploadedFiles;
-    },
-  )
-  
-   .post("/pre_upload", preUploadValidateMiddleware(["jpg", "png"], 20000000, 10000000),
-   async (context: any, next: any) => {
-     context.response.body = { msg: "Pass upload validations." };
-   },
-  )
-
   //This will return something like:
 {
 	"file1_0":{
