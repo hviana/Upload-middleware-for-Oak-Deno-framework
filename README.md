@@ -42,7 +42,7 @@ Ex:
 This middleware does a pre-validation before sending the form, for optimizations. To use it, send a JSON containing the objects "file". Use a different route than the upload route. Returns a validation message with all errors and status 422 (if there are errors).
 
 ## Examples:
-Below an example to work with <b>AJAX</b>, also accepting type="file" <b>multiple</b> (for now, Deno's std works with only one input for each file, see: https://github.com/denoland/deno/pull/6027):
+Below an example to work with <b>AJAX</b>, also accepting type="file" <b>multiple</b> (until the next version of std, Deno's std works with only one input for each file, see: https://github.com/denoland/deno/pull/6027):
 ```javascript
 var files = document.querySelector('#yourFormId input[type=file]').files
 var name = document.querySelector('#yourFormId input[type=file]').getAttribute('name');
