@@ -1,5 +1,4 @@
-import { ensureDir, v4, move } from "./deps.ts";
-import { MultipartReader } from "../std/mime/multipart.ts";
+import { ensureDir, v4, move, MultipartReader } from "./deps.ts";
 
 const upload = function (
   path: string,
