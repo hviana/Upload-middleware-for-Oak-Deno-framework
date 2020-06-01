@@ -48,28 +48,30 @@ Below an example to work with ajax, also accepting type="file" multiple (middlew
 var files = document.querySelector('#yourFormId input[type=file]').files
 var name = document.querySelector('#yourFormId input[type=file]').getAttribute('name');
 var form = new FormData();
-var validationData = {}
 for(var i=0;i<files.length;i++){
 	form.append(`${name}_${i}`, files[i]);	
+}
+var res = await fetch('/upload', { //Fetch API automatically puts the form in the format "multipart/form-data".
+	method: 'POST',
+	body: f,
+}).then(response=>response.json())
+console.log(res)
+
+//VALIDATIONS --------------
+var validationData = {}
+for(var i=0;i<files.length;i++){
 	var newObj = { //newObj is needed, JSON.stringify(files[i]) not work
 	   'name'             : files[i].name,
 	   'size'             : files[i].size
 	}; 
 	validationData[`${name}_${i}`] = newObj;
 }
-
 var validations = await fetch('/pre_upload', {
 	method: 'POST',
 	headers: {'Content-Type': 'application/json'},
 	body: JSON.stringify(validationData),
 }).then(response=>response.json())
 console.log(validations)
-
-var res = await fetch('/upload', { //Fetch API automatically puts the form in the format "multipart/form-data".
-	method: 'POST',
-	body: f,
-}).then(response=>response.json())
-console.log(res)
 ```
 In Deno:
 ```
