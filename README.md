@@ -42,7 +42,7 @@ Ex:
 .post("/pre_upload", preUploadValidate(["jpg", "png"], 20000000, 10000000), async (context: any, next: any) => { ...
 ```
 ## Examples:
-Below an example to work with <b>AJAX</b>, also accepting type="file" multiple (middleware works with an input for each file):
+Below an example to work with <b>AJAX</b>, also accepting type="file" <b>multiple</b> (middleware works with an input for each file):
 ```javascript
 var files = document.querySelector('#yourFormId input[type=file]').files
 var name = document.querySelector('#yourFormId input[type=file]').getAttribute('name');
