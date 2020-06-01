@@ -16,7 +16,7 @@
 <b>)</b>, next middlewares ...
 
 Ex: 
-```
+```javascript
 .post("/upload", uploadMiddleware('uploads'), async (context: any, next: any) => { ...
 .post("/upload", uploadMiddleware('uploads', ['jpg','png'], 20000000, 10000000, true), async (context: any, next: any) => { ...
 ```
@@ -75,7 +75,7 @@ var validations = await fetch('/pre_upload', {
 console.log(validations)
 ```
 In Deno:
-```
+```javascript
 import { uploadMiddleware, preUploadValidateMiddleware } from "https://deno.land/x/upload_middleware_for_oak_framework/mod.ts";
 
   .get("/", async (context: any, next: any) => {
@@ -119,10 +119,10 @@ import { uploadMiddleware, preUploadValidateMiddleware } from "https://deno.land
 }
 ```
 If you want, you can delete a file sent using:
-```
+```javascript
 await Deno.remove(context.uploadedFiles['file2']['uri']});
 ```
 Remember that you need permissions:
-```
+```javascript
 deno run --allow-net --allow-read --allow-write ./server.ts
 ```
