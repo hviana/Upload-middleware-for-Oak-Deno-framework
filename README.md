@@ -85,8 +85,8 @@ import { upload, preUploadValidate} from "https://deno.land/x/upload_middleware_
   )
   .post("/pre_upload", preUploadValidate(["jpg", "png"], 20000000, 10000000),
     async (context: any, next: any) => {
-     context.response.body = { msg: "Pass upload validations." };
-   },
+      context.response.body = { msg: "Pass upload validations." };
+    },
   )
   .get("/", async (context: any, next: any) => {
     context.response.body = `
