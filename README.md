@@ -44,7 +44,7 @@ Ex:
 ```
 ## Examples:
 Below an example to work with ajax, also accepting type="file" multiple (middleware works with an input for each file):
-```
+```javascript
 var files = document.querySelector('#yourFormId input[type=file]').files
 var name = document.querySelector('#yourFormId input[type=file]').getAttribute('name');
 var form = new FormData();
