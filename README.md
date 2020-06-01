@@ -46,6 +46,7 @@ Below an example to work with ajax, also accepting type="file" multiple (middlew
 ```javascript
 var files = document.querySelector('#yourFormId input[type=file]').files
 var name = document.querySelector('#yourFormId input[type=file]').getAttribute('name');
+
 var form = new FormData();
 for(var i=0;i<files.length;i++){
 	form.append(`${name}_${i}`, files[i]);	
