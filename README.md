@@ -58,6 +58,7 @@ var res = await fetch('/upload', { //Fetch API automatically puts the form in th
 console.log(res)
 
 //VALIDATIONS --------------
+
 var validationData = {}
 for(var i=0;i<files.length;i++){
 	var newObj = { //newObj is needed, JSON.stringify(files[i]) not work
