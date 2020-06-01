@@ -42,14 +42,14 @@ const upload = function (
             if (extensions.length > 0) {
               let ext = val.filename.split(".").pop();
               if (!extensions.includes(ext)) {
-                form.removeAll();
+                await form.removeAll();
                 context.throw(
                   422,
                   `The file extension is not allowed (${ext} in ${val.filename}). Allowed extensions: ${extensions}.`,
                 );
                 next();
               } else if (val.size > maxFileSizeBytes) {
-                form.removeAll();
+                await form.removeAll();
                 context.throw(
                   422,
                   `Maximum file upload size exceeded, file: ${val.filename}, size: ${val.size} bytes, maximum: ${maxFileSizeBytes} bytes.`,
