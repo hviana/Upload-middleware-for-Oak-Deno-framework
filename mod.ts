@@ -15,7 +15,7 @@ const upload = function (
         422,
         `Maximum total upload size exceeded, size: ${
           context.request.headers.get("content-length")
-        } bytes, maximum: ${maxSizeBytes} bytes.`,
+        } bytes, maximum: ${maxSizeBytes} bytes. `,
       );
       next();
     }
@@ -35,6 +35,7 @@ const upload = function (
       const form = await mr.readForm(0);
       let res: any = {};
       let entries: any = Array.from(form.entries());
+      let valitaions = "";
       for (const item of entries) {
         let values: any = [].concat(item[1]);
         for (const val of values) {
@@ -43,22 +44,21 @@ const upload = function (
               let ext = val.filename.split(".").pop();
               if (!extensions.includes(ext)) {
                 await form.removeAll();
-                context.throw(
-                  422,
+                valitaions +=
                   `The file extension is not allowed (${ext} in ${val.filename}). Allowed extensions: ${extensions}.`,
-                );
-                next();
+                  next();
               } else if (val.size > maxFileSizeBytes) {
                 await form.removeAll();
-                context.throw(
-                  422,
-                  `Maximum file upload size exceeded, file: ${val.filename}, size: ${val.size} bytes, maximum: ${maxFileSizeBytes} bytes.`,
-                );
-                next();
+                valitaions +=
+                  `Maximum file upload size exceeded, file: ${val.filename}, size: ${val.size} bytes, maximum: ${maxFileSizeBytes} bytes. `,
+                  next();
               }
             }
           }
         }
+      }
+      if (valitaions != "") {
+        context.throw(422, valitaions);
       }
       for (const item of entries) {
         let formField: any = item[0];
@@ -100,7 +100,7 @@ const upload = function (
     } else {
       context.throw(
         422,
-        'Invalid upload data, request must contains a body with form with enctype="multipart/form-data", and inputs with type="file". For a while, it does not support input with multiple attribute, but you can work around this in javascript by creating a virtual form and adding an input element for each "file" object in ("input [type = file]").files.',
+        'Invalid upload data, request must contains a body with form with enctype="multipart/form-data", and inputs with type="file". ',
       );
     }
     next();
