@@ -34,28 +34,26 @@ const upload = function (
       );
       const form = await mr.readForm(0);
       let res: any = {};
-      let entries: any = Array.from(form.entries());
+      let entries: any = Array.from(form.fileMap);
       for (const item of entries) {
         let values: any = [].concat(item[1]);
         for (const val of values) {
-          if (val.filename != undefined) {
-            if (extensions.length > 0) {
-              let ext = val.filename.split(".").pop();
-              if (!extensions.includes(ext)) {
-                await form.removeAll();
-                context.throw(
-                  422,
-                  `The file extension is not allowed (${ext} in ${val.filename}). Allowed extensions: ${extensions}.`,
-                );
-                next();
-              } else if (val.size > maxFileSizeBytes) {
-                await form.removeAll();
-                context.throw(
-                  422,
-                  `Maximum file upload size exceeded, file: ${val.filename}, size: ${val.size} bytes, maximum: ${maxFileSizeBytes} bytes.`,
-                );
-                next();
-              }
+          if (extensions.length > 0) {
+            let ext = val.filename.split(".").pop();
+            if (!extensions.includes(ext)) {
+              await form.removeAll();
+              context.throw(
+                422,
+                `The file extension is not allowed (${ext} in ${val.filename}). Allowed extensions: ${extensions}.`,
+              );
+              next();
+            } else if (val.size > maxFileSizeBytes) {
+              await form.removeAll();
+              context.throw(
+                422,
+                `Maximum file upload size exceeded, file: ${val.filename}, size: ${val.size} bytes, maximum: ${maxFileSizeBytes} bytes.`,
+              );
+              next();
             }
           }
         }
@@ -64,35 +62,33 @@ const upload = function (
         let formField: any = item[0];
         let filesData: any = [].concat(item[1]);
         for (const fileData of filesData) {
-          if (fileData.tempfile != undefined) {
-            const uuid = v4.generate(); //TODO improve to use of v5
-            const d = new Date();
-            const uploadPath =
-              (`${path}/${d.getFullYear()}/${d.getMonth()}/${d.getDay()}/${d.getHours()}/${d.getMinutes()}/${d.getSeconds()}/${uuid}`);
-            let fullPath = uploadPath;
-            if (useCurrentDir) {
-              fullPath = `${Deno.cwd()}/${fullPath}`;
-            }
-            await ensureDir(fullPath);
-            await move(
-              fileData.tempfile,
-              `${fullPath}/${fileData.filename}`,
-            );
-            let resData = fileData;
-            delete resData["tempfile"];
-            resData["url"] = encodeURI(
-              `${uploadPath}/${fileData.filename}`,
-            );
-            resData["uri"] = `${fullPath}/${fileData.filename}`;
-            if (res[formField] !== undefined) {
-              if (Array.isArray(res[formField])) {
-                res[formField].push(resData);
-              } else {
-                res[formField] = [res[formField], resData];
-              }
+          const uuid = v4.generate(); //TODO improve to use of v5
+          const d = new Date();
+          const uploadPath =
+            (`${path}/${d.getFullYear()}/${d.getMonth()}/${d.getDay()}/${d.getHours()}/${d.getMinutes()}/${d.getSeconds()}/${uuid}`);
+          let fullPath = uploadPath;
+          if (useCurrentDir) {
+            fullPath = `${Deno.cwd()}/${fullPath}`;
+          }
+          await ensureDir(fullPath);
+          await move(
+            fileData.tempfile,
+            `${fullPath}/${fileData.filename}`,
+          );
+          let resData = fileData;
+          delete resData["tempfile"];
+          resData["url"] = encodeURI(
+            `${uploadPath}/${fileData.filename}`,
+          );
+          resData["uri"] = `${fullPath}/${fileData.filename}`;
+          if (res[formField] !== undefined) {
+            if (Array.isArray(res[formField])) {
+              res[formField].push(resData);
             } else {
-              res[formField] = resData;
+              res[formField] = [res[formField], resData];
             }
+          } else {
+            res[formField] = resData;
           }
         }
       }
