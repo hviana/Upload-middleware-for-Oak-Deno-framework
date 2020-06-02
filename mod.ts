@@ -135,7 +135,7 @@ const preUploadValidate = function (
         `Maximum total upload size exceeded, size: ${totalBytes} bytes, maximum: ${maxSizeBytes} bytes. `;
     }
     if (validations != "") {
-      context.throw(422, validatios);
+      context.throw(422, validations);
     }
     next();
   };
