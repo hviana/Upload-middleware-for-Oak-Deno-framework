@@ -92,7 +92,6 @@ import { upload, preUploadValidate} from "https://deno.land/x/upload_middleware_
     context.response.body = `
             <form id="yourFormId" enctype="multipart/form-data" action="/upload" method="post">
               <input type="file" name="file1" multiple><br>
-              <input type="file" name="file2"><br>
               <input type="submit" value="Submit">
             </form>
     `;
