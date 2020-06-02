@@ -114,27 +114,27 @@ const preUploadValidate = function (
     let jsonData = await context.request.body();
     jsonData = jsonData["value"];
     let totalBytes = 0;
-    let validatios = "";
+    let validations = "";
     for (const iName in jsonData) {
       let files: any = [].concat(jsonData[iName]);
       for (const file of files) {
         totalBytes += jsonData[iName].size;
         if (file.size > maxFileSizeBytes) {
-          validatios +=
+          validations +=
             `Maximum file upload size exceeded, file: ${file.name}, size: ${file.size} bytes, maximum: ${maxFileSizeBytes} bytes. `;
         }
         if (!extensions.includes(file.name.split(".").pop())) {
-          validatios += `The file extension is not allowed (${
+          validations += `The file extension is not allowed (${
             file.name.split(".").pop()
           } in ${file.name}), allowed extensions: ${extensions}. `;
         }
       }
     }
     if (totalBytes > maxSizeBytes) {
-      validatios +=
+      validations +=
         `Maximum total upload size exceeded, size: ${totalBytes} bytes, maximum: ${maxSizeBytes} bytes. `;
     }
-    if (validatios != "") {
+    if (validations != "") {
       context.throw(422, validatios);
     }
     next();
