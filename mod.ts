@@ -39,7 +39,7 @@ const upload = function (
       for (const item of entries) {
         let values: any = [].concat(item[1]);
         for (const val of values) {
-          if (val.filename != undefined) {
+          if (val.filename !== undefined) {
             if (extensions.length > 0) {
               let ext = val.filename.split(".").pop();
               if (!extensions.includes(ext)) {
@@ -63,7 +63,7 @@ const upload = function (
         let formField: any = item[0];
         let filesData: any = [].concat(item[1]);
         for (const fileData of filesData) {
-          if (fileData.tempfile != undefined) {
+          if (fileData.tempfile !== undefined) {
             const uuid = v4.generate(); //TODO improve to use of v5
             const d = new Date();
             const uploadPath =
