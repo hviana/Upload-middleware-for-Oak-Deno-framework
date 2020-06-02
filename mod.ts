@@ -64,10 +64,9 @@ const upload = function (
         let filesData: any = [].concat(item[1]);
         for (const fileData of filesData) {
           if (fileData.tempfile !== undefined) {
-            const uuid = v4.generate(); //TODO improve to use of v5
+            const uuid = `${d.getFullYear()}/${d.getMonth()}/${d.getDay()}/${d.getHours()}/${d.getMinutes()}/${d.getSeconds()}/${v4.generate()}`; //TODO improve to use of v5
             const d = new Date();
-            const uploadPath =
-              (`${path}/${d.getFullYear()}/${d.getMonth()}/${d.getDay()}/${d.getHours()}/${d.getMinutes()}/${d.getSeconds()}/${uuid}`);
+            const uploadPath = `${path}/${uuid}`;
             let fullPath = uploadPath;
             if (useCurrentDir) {
               fullPath = `${Deno.cwd()}/${fullPath}`;
@@ -79,6 +78,7 @@ const upload = function (
             );
             let resData = fileData;
             delete resData["tempfile"];
+            resData["id"] = uuid;
             resData["url"] = encodeURI(
               `${uploadPath}/${fileData.filename}`,
             );
