@@ -35,7 +35,7 @@ const upload = function (
       const form = await mr.readForm(0);
       let res: any = {};
       let entries: any = Array.from(form.entries());
-      let valitaions = "";
+      let validations = "";
       for (const item of entries) {
         let values: any = [].concat(item[1]);
         for (const val of values) {
@@ -43,19 +43,19 @@ const upload = function (
             if (extensions.length > 0) {
               let ext = val.filename.split(".").pop();
               if (!extensions.includes(ext)) {
-                valitaions +=
+                validations +=
                   `The file extension is not allowed (${ext} in ${val.filename}). Allowed extensions: ${extensions}. `;
               } else if (val.size > maxFileSizeBytes) {
-                valitaions +=
+                validations +=
                   `Maximum file upload size exceeded, file: ${val.filename}, size: ${val.size} bytes, maximum: ${maxFileSizeBytes} bytes. `;
               }
             }
           }
         }
       }
-      if (valitaions != "") {
+      if (validations != "") {
         await form.removeAll();
-        context.throw(422, valitaions);
+        context.throw(422, validations);
         next();
       }
       for (const item of entries) {
