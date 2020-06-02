@@ -7,7 +7,7 @@ const upload = function (
   maxFileSizeBytes: number = Number.MAX_SAFE_INTEGER,
   useCurrentDir: boolean = true,
 ) {
-  return async function (context: any, next: any) {
+  return async (context: any, next: any) {
     if (
       parseInt(context.request.headers.get("content-length")) > maxSizeBytes
     ) {
