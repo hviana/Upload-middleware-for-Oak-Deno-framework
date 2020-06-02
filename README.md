@@ -102,6 +102,7 @@ import { upload, preUploadValidate} from "https://deno.land/x/upload_middleware_
 		"filename":"test.jpg",
 		"type":"image/jpeg",
 		"size":16980,
+		"id":"2020/4/4/20/0/28/1350065e-7053-429b-869b-08008a098b23",
 		"url":"uploads/2020/4/4/20/0/28/1350065e-7053-429b-869b-08008a098b23/test.jpg",
 		"uri":"C:\\Users\\Engenharia\\Documents\\base/uploads/2020/4/4/20/0/28/1350065e-7053-429b-869b-08008a098b23/test.jpg"
 	},
@@ -109,6 +110,7 @@ import { upload, preUploadValidate} from "https://deno.land/x/upload_middleware_
 		"filename":"download.png",
 		"type":"image/png",
 		"size":2623,
+		"id":"2020/4/4/20/0/28/46698b10-d319-4bbb-af64-fc8b2b991b54",
 		"url":"uploads/2020/4/4/20/0/28/46698b10-d319-4bbb-af64-fc8b2b991b54/download.png",
 		"uri":"C:\\Users\\Engenharia\\Documents\\base/uploads/2020/4/4/20/0/28/46698b10-d319-4bbb-af64-fc8b2b991b54/download.png"
 	}
