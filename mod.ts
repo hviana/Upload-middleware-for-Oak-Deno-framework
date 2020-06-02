@@ -43,11 +43,9 @@ const upload = function (
             if (extensions.length > 0) {
               let ext = val.filename.split(".").pop();
               if (!extensions.includes(ext)) {
-                await form.removeAll();
                 valitaions +=
                   `The file extension is not allowed (${ext} in ${val.filename}). Allowed extensions: ${extensions}. `;
               } else if (val.size > maxFileSizeBytes) {
-                await form.removeAll();
                 valitaions +=
                   `Maximum file upload size exceeded, file: ${val.filename}, size: ${val.size} bytes, maximum: ${maxFileSizeBytes} bytes. `;
               }
@@ -56,6 +54,7 @@ const upload = function (
         }
       }
       if (valitaions != "") {
+        await form.removeAll();
         context.throw(422, valitaions);
         next();
       }
