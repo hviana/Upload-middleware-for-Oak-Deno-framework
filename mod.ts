@@ -45,13 +45,11 @@ const upload = function (
               if (!extensions.includes(ext)) {
                 await form.removeAll();
                 valitaions +=
-                  `The file extension is not allowed (${ext} in ${val.filename}). Allowed extensions: ${extensions}.`,
-                  next();
+                  `The file extension is not allowed (${ext} in ${val.filename}). Allowed extensions: ${extensions}. `;
               } else if (val.size > maxFileSizeBytes) {
                 await form.removeAll();
                 valitaions +=
-                  `Maximum file upload size exceeded, file: ${val.filename}, size: ${val.size} bytes, maximum: ${maxFileSizeBytes} bytes. `,
-                  next();
+                  `Maximum file upload size exceeded, file: ${val.filename}, size: ${val.size} bytes, maximum: ${maxFileSizeBytes} bytes. `;
               }
             }
           }
@@ -59,6 +57,7 @@ const upload = function (
       }
       if (valitaions != "") {
         context.throw(422, valitaions);
+        next();
       }
       for (const item of entries) {
         let formField: any = item[0];
@@ -100,7 +99,7 @@ const upload = function (
     } else {
       context.throw(
         422,
-        'Invalid upload data, request must contains a body with form with enctype="multipart/form-data", and inputs with type="file". ',
+        'Invalid upload data, request must contains a body with form "multipart/form-data", and inputs with type="file". ',
       );
     }
     next();
