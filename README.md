@@ -7,6 +7,8 @@ Ex:
 .post("/upload", upload('uploads'), async (context: any, next: any) => { ...
 .post("/upload", upload('uploads', ['jpg','png'], 20000000, 10000000, true), async (context: any, next: any) => { ...
 ```
+Uploads will be in <b>context.uploadedFiles</b>;
+
 <b>upload(</b>
 
 <b>path</b>,
@@ -20,8 +22,6 @@ Ex:
 <b>useCurrentDir</b>: optional, if true the path is relative to current Deno working directory, default true
 
 <b>)</b>, next middlewares ...
-
-Uploads will be in <b>context.uploadedFiles</b>;
 
 Request must contains a body with form type "multipart/form-data", and inputs with type="file". 
 
