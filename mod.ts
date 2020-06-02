@@ -129,10 +129,10 @@ const preUploadValidate = function (
           } in ${file.name}), allowed extensions: ${extensions}. `;
         }
       }
-      if (totalBytes > maxSizeBytes) {
-        validatios +=
-          `Maximum total upload size exceeded, size: ${totalBytes} bytes, maximum: ${maxSizeBytes} bytes. `;
-      }
+    }
+    if (totalBytes > maxSizeBytes) {
+      validatios +=
+        `Maximum total upload size exceeded, size: ${totalBytes} bytes, maximum: ${maxSizeBytes} bytes. `;
     }
     if (validatios != "") {
       context.throw(422, validatios);
