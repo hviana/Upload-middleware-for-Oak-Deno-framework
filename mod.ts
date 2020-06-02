@@ -44,7 +44,7 @@ const upload = function (
               let ext = val.filename.split(".").pop();
               if (!extensions.includes(ext)) {
                 validations +=
-                  `The file extension is not allowed (${ext} in ${val.filename}). Allowed extensions: ${extensions}. `;
+                  `The file extension is not allowed (${ext} in ${val.filename}), allowed extensions: ${extensions}. `;
               }
             }
             if (val.size > maxFileSizeBytes) {
