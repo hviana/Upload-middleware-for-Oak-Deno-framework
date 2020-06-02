@@ -45,7 +45,8 @@ const upload = function (
               if (!extensions.includes(ext)) {
                 validations +=
                   `The file extension is not allowed (${ext} in ${val.filename}). Allowed extensions: ${extensions}. `;
-              } else if (val.size > maxFileSizeBytes) {
+              }
+              if (val.size > maxFileSizeBytes) {
                 validations +=
                   `Maximum file upload size exceeded, file: ${val.filename}, size: ${val.size} bytes, maximum: ${maxFileSizeBytes} bytes. `;
               }
