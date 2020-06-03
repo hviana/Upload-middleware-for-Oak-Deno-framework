@@ -65,7 +65,7 @@ const upload = function (
         for (const fileData of filesData) {
           if (fileData.tempfile !== undefined) {
             const d = new Date();
-            const uuid = `${d.getFullYear()}/${d.getMonth()+1}/${d.getDay()}/${d.getHours()}/${d.getMinutes()}/${d.getSeconds()}/${v4.generate()}`; //TODO improve to use of v5
+            const uuid = `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}/${d.getHours()}/${d.getMinutes()}/${d.getSeconds()}/${v4.generate()}`; //TODO improve to use of v5
             const uploadPath = `${path}/${uuid}`;
             let fullPath = uploadPath;
             if (useCurrentDir) {
