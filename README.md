@@ -121,6 +121,6 @@ If you want, you can delete a file sent using:
 await Deno.remove(context.uploadedFiles['file2']['uri']});
 ```
 Remember that you need permissions:
-```
+```bash
 deno run --allow-net --allow-read --allow-write ./server.ts
 ```
