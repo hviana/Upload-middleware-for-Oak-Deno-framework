@@ -6,6 +6,7 @@ const upload = function (
   maxSizeBytes: number = Number.MAX_SAFE_INTEGER,
   maxFileSizeBytes: number = Number.MAX_SAFE_INTEGER,
   saveFile: boolean = true,
+  readFile: boolean = false,
   useCurrentDir: boolean = true,
 ) {
   return async (context: any, next: any) => {
@@ -66,6 +67,9 @@ const upload = function (
         for (const fileData of filesData) {
           if (fileData.tempfile !== undefined) {
             let resData = fileData;
+            if (readFile) {
+              resData["data"] = await Deno.readFile(resData["tempfile"]);
+            }
             if (saveFile) {
               const d = new Date();
               const uuid = `${d.getFullYear()}/${d.getMonth() +
@@ -86,9 +90,6 @@ const upload = function (
                 `${uploadPath}/${fileData.filename}`,
               );
               resData["uri"] = `${fullPath}/${fileData.filename}`;
-            } else {
-              resData["data"] = await Deno.readFile(resData["tempfile"]);
-              delete resData["tempfile"];
             }
             if (res[formField] !== undefined) {
               if (Array.isArray(res[formField])) {
