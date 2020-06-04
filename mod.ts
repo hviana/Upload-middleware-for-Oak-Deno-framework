@@ -1,4 +1,3 @@
-
 import { ensureDir, v4, move, MultipartReader } from "./deps.ts";
 
 const upload = function (
@@ -91,7 +90,6 @@ const upload = function (
               resData["data"] = await Deno.readFile(resData["tempfile"]);
               delete resData["tempfile"];
             }
-
             if (res[formField] !== undefined) {
               if (Array.isArray(res[formField])) {
                 res[formField].push(resData);
