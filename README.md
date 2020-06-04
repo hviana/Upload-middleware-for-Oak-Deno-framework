@@ -19,6 +19,8 @@ Uploads will be in <b>context.uploadedFiles</b>;
 
 <b>maxFileSizeBytes</b>: optional, max size in bytes for each file in form, default unlimited - Number.MAX_SAFE_INTEGER, 
 
+<b>saveFile</b>: optional, if false, the file will not be saved in the file system, it will be fully loaded on the ram and a Uint8Array will be returned in the data field, default true.
+
 <b>useCurrentDir</b>: optional, if true the path is relative to current Deno working directory, default true
 
 <b>)</b>, next middlewares ...
