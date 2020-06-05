@@ -99,12 +99,12 @@ const upload = function (
                 res[formField] = [res[formField], resData];
               }
             } else {
-              let pathTempFile = `${Deno.cwd()}/temp_uploads/${fileData.tempfile.split("\").pop()}`;
+              let pathTempFile = `${Deno.cwd()}/temp_uploads/${resData.tempfile.split("\").pop()}`;
               await move(
-                fileData.tempfile,
+                resData.tempfile,
                 pathTempFile,
               );
-              fileData.tempfile = pathTempFile;
+              resData.tempfile = pathTempFile;
               res[formField] = resData;
             }
           }
