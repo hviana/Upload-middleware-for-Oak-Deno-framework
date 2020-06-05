@@ -88,7 +88,7 @@ const upload = function (
               delete resData["tempfile"];
               resData["id"] = uuid;
               resData["url"] = encodeURI(
-                `${uploadPath}\\${fileData.filename}`.replace(/\\/gi, "/");,
+                `${uploadPath}\\${fileData.filename}`.replace(/\\/g, "/");,
               );
               resData["uri"] = `${fullPath}\\${fileData.filename}`;
             } else {
