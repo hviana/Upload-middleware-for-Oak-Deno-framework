@@ -99,7 +99,6 @@ const upload = function (
                 pathTempFile,
               );
               resData.tempfile = pathTempFile;
-              res[formField] = resData;
             }
             if (res[formField] !== undefined) {
               if (Array.isArray(res[formField])) {
