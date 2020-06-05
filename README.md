@@ -124,6 +124,10 @@ If you want, you can delete a file sent using:
 ```javascript
 await Deno.remove(context.uploadedFiles['file2']['uri']});
 ```
+Or (if not save file):
+```javascript
+await Deno.remove(context.uploadedFiles['file2']['tempfile']});
+```
 Remember that you need permissions:
 ```sh
 deno run --allow-net --allow-read --allow-write ./server.ts
