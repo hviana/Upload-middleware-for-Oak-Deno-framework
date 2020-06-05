@@ -1,4 +1,4 @@
-import { ensureDir, v4, move, MultipartReader } from "./deps.ts";
+import { ensureDir, ensureDirSync, v4, move, MultipartReader } from "./deps.ts";
 
 const upload = function (
   path: string,
@@ -9,6 +9,7 @@ const upload = function (
   readFile: boolean = false,
   useCurrentDir: boolean = true,
 ) {
+  ensureDirSync(`${Deno.cwd()}/temp_uploads`);
   return async (context: any, next: any) => {
     if (
       parseInt(context.request.headers.get("content-length")) > maxSizeBytes
@@ -98,6 +99,12 @@ const upload = function (
                 res[formField] = [res[formField], resData];
               }
             } else {
+              let pathTempFile = `${Deno.cwd()}/temp_uploads/${fileData.tempfile.split("\").pop()}`;
+              await move(
+                fileData.tempfile,
+                pathTempFile,
+              );
+              fileData.tempfile = pathTempFile;
               res[formField] = resData;
             }
           }
