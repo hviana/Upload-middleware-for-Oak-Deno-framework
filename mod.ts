@@ -106,6 +106,8 @@ const upload = function (
               } else {
                 res[formField] = [res[formField], resData];
               }
+            } else {
+              res[formField] = resData;
             }
           }
         }
