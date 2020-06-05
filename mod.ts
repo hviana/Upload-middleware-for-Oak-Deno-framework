@@ -91,13 +91,6 @@ const upload = function (
                 `${uploadPath}\\${fileData.filename}`,
               );
               resData["uri"] = `${fullPath}\\${fileData.filename}`;
-            }
-            if (res[formField] !== undefined) {
-              if (Array.isArray(res[formField])) {
-                res[formField].push(resData);
-              } else {
-                res[formField] = [res[formField], resData];
-              }
             } else {
               let tempFileName = resData.tempfile.split("\\").pop();
               let pathTempFile = `${Deno.cwd()}\\temp_uploads\\${tempFileName}`;
@@ -107,6 +100,13 @@ const upload = function (
               );
               resData.tempfile = pathTempFile;
               res[formField] = resData;
+            }
+            if (res[formField] !== undefined) {
+              if (Array.isArray(res[formField])) {
+                res[formField].push(resData);
+              } else {
+                res[formField] = [res[formField], resData];
+              }
             }
           }
         }
