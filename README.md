@@ -108,7 +108,7 @@ import { upload, preUploadValidate} from "https://deno.land/x/upload_middleware_
 		"size":16980,
 		"id":"2020\\4\\4\\20\\0\\28\\1350065e-7053-429b-869b-08008a098b23",
 		"url":"uploads/2020/4/4/20/0/28/1350065e-7053-429b-869b-08008a098b23/test.jpg",
-		"uri":"C:\\Users\\Engenharia\\Documents\\base\\uploads\\2020\\4\\4\\20\\0\\28\\1350065e-7053-429b-869b-08008a098b23/test.jpg"
+		"uri":"C:\\Users\\Engenharia\\Documents\\base\\uploads\\2020\\4\\4\\20\\0\\28\\1350065e-7053-429b-869b-08008a098b23\\test.jpg"
 	},
 	"file1_1":{
 		"filename":"download.png",
