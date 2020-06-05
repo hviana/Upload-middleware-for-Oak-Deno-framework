@@ -122,11 +122,11 @@ import { upload, preUploadValidate} from "https://deno.land/x/upload_middleware_
 ```
 If you want, you can delete a file sent using:
 ```javascript
-await Deno.remove(context.uploadedFiles['file2']['uri']});
+await Deno.remove(context.uploadedFiles['file2']['uri']);
 ```
 Or (if not save file):
 ```javascript
-await Deno.remove(context.uploadedFiles['file2']['tempfile']});
+await Deno.remove(context.uploadedFiles['file2']['tempfile']);
 ```
 Remember that you need permissions:
 ```sh
