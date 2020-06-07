@@ -73,9 +73,12 @@ const upload = function (
               resData["data"] = await Deno.readFile(resData["tempfile"]);
             }
             if (saveFile) {
-              const d = new Date();
-              const uuid = `${d.getFullYear()}\\${d.getMonth() +
-                1}\\${d.getDate()}\\${d.getHours()}\\${d.getMinutes()}\\${d.getSeconds()}\\${v4.generate()}`; //TODO improve to use of v5
+              let uuid : String;
+              if(addUuid){
+                const d = new Date();
+                uuid=`${d.getFullYear()}\\${d.getMonth() +
+                  1}\\${d.getDate()}\\${d.getHours()}\\${d.getMinutes()}\\${d.getSeconds()}\\${v4.generate()}`
+              } //TODO improve to use of v5
               const uploadPath = `${path}${addUuid ? `\\${uuid}` : ''}`;
               let fullPath = uploadPath;
               if (useCurrentDir) {
