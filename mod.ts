@@ -8,7 +8,7 @@ const upload = function (
   saveFile: boolean = true,
   readFile: boolean = false,
   useCurrentDir: boolean = true,
-  organize: boolean = false
+  organize: boolean = true,
 ) {
   ensureDirSync(`${Deno.cwd()}\\temp_uploads`);
   return async (context: any, next: any) => {
