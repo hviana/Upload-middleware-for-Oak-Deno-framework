@@ -8,7 +8,7 @@ const upload = function (
   saveFile: boolean = true,
   readFile: boolean = false,
   useCurrentDir: boolean = true,
-  addUuid: boolean = false
+  organize: boolean = false
 ) {
   ensureDirSync(`${Deno.cwd()}\\temp_uploads`);
   return async (context: any, next: any) => {
@@ -76,7 +76,7 @@ const upload = function (
               const d = new Date();
               const uuid = `${d.getFullYear()}\\${d.getMonth() +
                 1}\\${d.getDate()}\\${d.getHours()}\\${d.getMinutes()}\\${d.getSeconds()}\\${v4.generate()}`; //TODO improve to use of v5
-              const uploadPath = `${path}${addUuid ? `\\${uuid}` : ''}`;
+              const uploadPath = `${path}${organize ? `\\${uuid}` : ''}`;
               let fullPath = uploadPath;
               if (useCurrentDir) {
                 fullPath = `${Deno.cwd()}\\${fullPath}`;
