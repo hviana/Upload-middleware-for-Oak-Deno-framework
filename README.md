@@ -25,6 +25,8 @@ Uploads will be in <b>context.uploadedFiles</b>;
 
 <b>useCurrentDir</b>: optional, if true the path is relative to current Deno working directory, default true.
 
+<b>organize</b>: optional, if true organizes files avoiding file system problems and creating a unique path for each file, default true.
+
 <b>)</b>, next middlewares ...
 
 Request must contains a body with form type "multipart/form-data", and inputs with type="file". 
