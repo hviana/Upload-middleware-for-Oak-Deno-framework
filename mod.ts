@@ -8,7 +8,8 @@ const upload = function (
   saveFile: boolean = true,
   readFile: boolean = false,
   useCurrentDir: boolean = true,
-  addUuid: boolean = false
+  organize: boolean = true,
+  unique: boolean = true
 ) {
   ensureDirSync(`${Deno.cwd()}\\temp_uploads`);
   return async (context: any, next: any) => {
@@ -73,13 +74,10 @@ const upload = function (
               resData["data"] = await Deno.readFile(resData["tempfile"]);
             }
             if (saveFile) {
-              let uuid : String;
-              if(addUuid){
-                const d = new Date();
-                uuid=`${d.getFullYear()}\\${d.getMonth() +
-                  1}\\${d.getDate()}\\${d.getHours()}\\${d.getMinutes()}\\${d.getSeconds()}\\${v4.generate()}`
-              } //TODO improve to use of v5
-              const uploadPath = `${path}${addUuid ? `\\${uuid}` : ''}`;
+              const d = new Date();
+              const uuid = `${d.getFullYear()}\\${d.getMonth() +
+                1}\\${d.getDate()}\\${d.getHours()}\\${d.getMinutes()}\\${d.getSeconds()}\\${v4.generate()}`; //TODO improve to use of v5
+              const uploadPath = `${path}${organize ? `\\${uuid}` : ''}`;
               let fullPath = uploadPath;
               if (useCurrentDir) {
                 fullPath = `${Deno.cwd()}\\${fullPath}`;
@@ -87,14 +85,14 @@ const upload = function (
               await ensureDir(fullPath);
               await move(
                 fileData.tempfile,
-                `${fullPath}\\${fileData.filename}`,
+                `${fullPath}\\${unique ? `${v4.generate() + fileData.filename}` : fileData.filename}`,
               );
               delete resData["tempfile"];
               resData["id"] = uuid.replace(/\\/g, "/");
               resData["url"] = encodeURI(
-                `${uploadPath}\\${fileData.filename}`.replace(/\\/g, "/"),
+                `${uploadPath}\\${unique ? `${v4.generate() + fileData.filename}` : fileData.filename}`.replace(/\\/g, "/"),
               );
-              resData["uri"] = `${fullPath}\\${fileData.filename}`;
+              resData["uri"] = `${fullPath}\\${unique ? `${v4.generate() + fileData.filename}` : fileData.filename}`;
             } else {
               let tempFileName = resData.tempfile.split("\\").pop();
               let pathTempFile = `${Deno.cwd()}\\temp_uploads\\${tempFileName}`;

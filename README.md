@@ -5,7 +5,7 @@ This middleware automatically organizes uploads to avoid file system problems an
 Ex: 
 ```javascript
 .post("/upload", upload('uploads'), async (context: any, next: any) => { ...
-.post("/upload", upload('uploads', ['jpg','png'], 20000000, 10000000, true, false, true), async (context: any, next: any) => { ...
+.post("/upload", upload('uploads', ['jpg','png'], 20000000, 10000000, true, false, true, true), async (context: any, next: any) => { ...
 ```
 Uploads will be in <b>context.uploadedFiles</b>;
 
@@ -24,6 +24,8 @@ Uploads will be in <b>context.uploadedFiles</b>;
 <b>readFile</b>: optional, if true the file will be fully loaded on the ram and a Uint8Array will be returned in the 'data' field, default false.
 
 <b>useCurrentDir</b>: optional, if true the path is relative to current Deno working directory, default true.
+
+<b>organize</b>: optional, if true organizes files avoiding file system problems and creating a unique path for each file, default true.
 
 <b>)</b>, next middlewares ...
 
@@ -82,7 +84,7 @@ In Deno:
 ```javascript
 import { upload, preUploadValidate} from "https://deno.land/x/upload_middleware_for_oak_framework/mod.ts";
 
-  .post("/upload", upload('uploads', ['jpg','png'], 20000000, 10000000, true, false, true),
+  .post("/upload", upload('uploads', ['jpg','png'], 20000000, 10000000, true, false, true, true),
     async (context: any, next: any) => {
       context.response.body = context.uploadedFiles;
     },
