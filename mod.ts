@@ -1,4 +1,5 @@
 import { ensureDir, ensureDirSync, v4, move, MultipartReader } from "./deps.ts";
+import { SEP, join } from "https://deno.land/std/path/mod.ts";
 
 const upload = function (
   path: string,
@@ -9,7 +10,7 @@ const upload = function (
   readFile: boolean = false,
   useCurrentDir: boolean = true,
 ) {
-  ensureDirSync(`${Deno.cwd()}\\temp_uploads`);
+  ensureDirSync(join(Deno.cwd(), 'temp_uploads'));
   return async (context: any, next: any) => {
     if (
       parseInt(context.request.headers.get("content-length")) > maxSizeBytes
@@ -73,27 +74,34 @@ const upload = function (
             }
             if (saveFile) {
               const d = new Date();
-              const uuid = `${d.getFullYear()}\\${d.getMonth() +
-                1}\\${d.getDate()}\\${d.getHours()}\\${d.getMinutes()}\\${d.getSeconds()}\\${v4.generate()}`; //TODO improve to use of v5
-              const uploadPath = `${path}\\${uuid}`;
+              const uuid = join(
+                d.getFullYear().toString(),
+                (d.getMonth()+1).toString(),
+                d.getDate().toString(),
+                d.getHours().toString(),
+                d.getMinutes().toString(),
+                d.getSeconds().toString(),
+                v4.generate() //TODO improve to use of v5
+              );
+              const uploadPath = join(path,uuid);
               let fullPath = uploadPath;
               if (useCurrentDir) {
-                fullPath = `${Deno.cwd()}\\${fullPath}`;
+                fullPath = join(Deno.cwd(),fullPath);
               }
               await ensureDir(fullPath);
               await move(
                 fileData.tempfile,
-                `${fullPath}\\${fileData.filename}`,
+                join(fullPath,fileData.filename),
               );
               delete resData["tempfile"];
               resData["id"] = uuid.replace(/\\/g, "/");
               resData["url"] = encodeURI(
-                `${uploadPath}\\${fileData.filename}`.replace(/\\/g, "/"),
+                join(uploadPath,fileData.filename).replace(/\\/g, "/"),
               );
-              resData["uri"] = `${fullPath}\\${fileData.filename}`;
+              resData["uri"] = join(fullPath,fileData.filename);
             } else {
-              let tempFileName = resData.tempfile.split("\\").pop();
-              let pathTempFile = `${Deno.cwd()}\\temp_uploads\\${tempFileName}`;
+              let tempFileName = resData.tempfile.split(SEP).pop();
+              let pathTempFile = join(Deno.cwd(),'temp_uploads',tempFileName)
               await move(
                 resData.tempfile,
                 pathTempFile,
