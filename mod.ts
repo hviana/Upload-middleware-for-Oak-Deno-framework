@@ -8,7 +8,7 @@ interface UploadOptions {
   saveFile?: boolean;
   readFile?: boolean;
   useCurrentDir?: boolean;
-  useDateTimeSubFolders?: boolean;
+  useDateTimeSubDir?: boolean;
 }
 
 const defaultUploadOptions: UploadOptions = {
@@ -18,7 +18,7 @@ const defaultUploadOptions: UploadOptions = {
   saveFile: true,
   readFile: false,
   useCurrentDir: true,
-  useDateTimeSubFolders: true,
+  useDateTimeSubDir: true,
 }
 
 const upload = function (
@@ -26,7 +26,7 @@ const upload = function (
   options: UploadOptions = defaultUploadOptions
 ) {
   const mergedOptions = Object.assign({}, defaultUploadOptions, options);
-  const { extensions, maxSizeBytes, maxFileSizeBytes, saveFile, readFile, useCurrentDir, useDateTimeSubFolders } = mergedOptions;
+  const { extensions, maxSizeBytes, maxFileSizeBytes, saveFile, readFile, useCurrentDir, useDateTimeSubDir } = mergedOptions;
   ensureDirSync(join(Deno.cwd(), 'temp_uploads'));
   return async (context: any, next: any) => {
     if (
@@ -92,7 +92,7 @@ const upload = function (
             if (saveFile) {
               let uploadPath = path;
               let uuid = '';
-              if (useDateTimeSubFolders) {
+              if (useDateTimeSubDir) {
                 const d = new Date();
                 uuid = join(
                   d.getFullYear().toString(),
