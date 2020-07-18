@@ -1,19 +1,36 @@
 import { ensureDir, ensureDirSync, v4, move, MultipartReader } from "./deps.ts";
 import { SEP, join } from "https://deno.land/std/path/mod.ts";
 
+interface UploadOptions {
+  extensions?: Array<string>;
+  maxSizeBytes?: number;
+  maxFileSizeBytes?: number;
+  saveFile?: boolean;
+  readFile?: boolean;
+  useCurrentDir?: boolean;
+  useDateTimeSubDir?: boolean;
+}
+
+const defaultUploadOptions: UploadOptions = {
+  extensions: [],
+  maxSizeBytes: Number.MAX_SAFE_INTEGER,
+  maxFileSizeBytes: Number.MAX_SAFE_INTEGER,
+  saveFile: true,
+  readFile: false,
+  useCurrentDir: true,
+  useDateTimeSubDir: true,
+}
+
 const upload = function (
   path: string,
-  extensions: Array<string> = [],
-  maxSizeBytes: number = Number.MAX_SAFE_INTEGER,
-  maxFileSizeBytes: number = Number.MAX_SAFE_INTEGER,
-  saveFile: boolean = true,
-  readFile: boolean = false,
-  useCurrentDir: boolean = true,
+  options: UploadOptions = defaultUploadOptions
 ) {
+  const mergedOptions = Object.assign({}, defaultUploadOptions, options);
+  const { extensions, maxSizeBytes, maxFileSizeBytes, saveFile, readFile, useCurrentDir, useDateTimeSubDir } = mergedOptions;
   ensureDirSync(join(Deno.cwd(), 'temp_uploads'));
   return async (context: any, next: any) => {
     if (
-      parseInt(context.request.headers.get("content-length")) > maxSizeBytes
+      parseInt(context.request.headers.get("content-length")) > maxSizeBytes!
     ) {
       context.throw(
         422,
@@ -44,14 +61,14 @@ const upload = function (
         let values: any = [].concat(item[1]);
         for (const val of values) {
           if (val.filename !== undefined) {
-            if (extensions.length > 0) {
+            if (extensions!.length > 0) {
               let ext = val.filename.split(".").pop();
-              if (!extensions.includes(ext)) {
+              if (!extensions!.includes(ext)) {
                 validations +=
                   `The file extension is not allowed (${ext} in ${val.filename}), allowed extensions: ${extensions}. `;
               }
             }
-            if (val.size > maxFileSizeBytes) {
+            if (val.size > maxFileSizeBytes!) {
               validations +=
                 `Maximum file upload size exceeded, file: ${val.filename}, size: ${val.size} bytes, maximum: ${maxFileSizeBytes} bytes. `;
             }
@@ -73,17 +90,21 @@ const upload = function (
               resData["data"] = await Deno.readFile(resData["tempfile"]);
             }
             if (saveFile) {
-              const d = new Date();
-              const uuid = join(
-                d.getFullYear().toString(),
-                (d.getMonth()+1).toString(),
-                d.getDate().toString(),
-                d.getHours().toString(),
-                d.getMinutes().toString(),
-                d.getSeconds().toString(),
-                v4.generate() //TODO improve to use of v5
-              );
-              const uploadPath = join(path,uuid);
+              let uploadPath = path;
+              let uuid = '';
+              if (useDateTimeSubDir) {
+                const d = new Date();
+                uuid = join(
+                  d.getFullYear().toString(),
+                  (d.getMonth()+1).toString(),
+                  d.getDate().toString(),
+                  d.getHours().toString(),
+                  d.getMinutes().toString(),
+                  d.getSeconds().toString(),
+                  v4.generate() //TODO improve to use of v5
+                );
+                uploadPath = join(path,uuid);
+              };
               let fullPath = uploadPath;
               if (useCurrentDir) {
                 fullPath = join(Deno.cwd(),fullPath);

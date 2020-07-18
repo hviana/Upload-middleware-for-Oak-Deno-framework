@@ -5,7 +5,8 @@ This middleware automatically organizes uploads to avoid file system problems an
 Ex: 
 ```javascript
 .post("/upload", upload('uploads'), async (context: any, next: any) => { ...
-.post("/upload", upload('uploads', ['jpg','png'], 20000000, 10000000, true, false, true), async (context: any, next: any) => { ...
+.post("/upload", upload('uploads', { extensions: ['jpg', 'png'], maxSizeBytes: 20000000, maxFileSizeBytes: 10000000, saveFile: true, readFile: false, useCurrentDir: true, useDateTimeSubDir: true }), async (context: any, next: any) => { ...
+.post("/upload", upload('uploads', { extensions: ['jpg', 'png'], useDateTimeSubDir: false }), async (context: any, next: any) => { ...
 ```
 Uploads will be in <b>context.uploadedFiles</b>;
 
@@ -24,6 +25,8 @@ Uploads will be in <b>context.uploadedFiles</b>;
 <b>readFile</b>: optional, if true the file will be fully loaded on the ram and a Uint8Array will be returned in the 'data' field, default false.
 
 <b>useCurrentDir</b>: optional, if true the path is relative to current Deno working directory, default true.
+
+<b>useDateTimeSubDir</b>: optional, if true the file path will be prefixed with /year/month/day/hour/minute/second/uuid/filename e.g. `/2020/4/4/20/0/28/1350065e-7053-429b-869b-08008a098b23/test.jpg`, default true.
 
 <b>)</b>, next middlewares ...
 
@@ -82,7 +85,7 @@ In Deno:
 ```javascript
 import { upload, preUploadValidate} from "https://deno.land/x/upload_middleware_for_oak_framework/mod.ts";
 
-  .post("/upload", upload('uploads', ['jpg','png'], 20000000, 10000000, true, false, true),
+  .post("/upload", upload('uploads', { extensions: ['jpg', 'png'], maxSizeBytes: 20000000, maxFileSizeBytes: 10000000 }),
     async (context: any, next: any) => {
       context.response.body = context.uploadedFiles;
     },
