@@ -148,7 +148,7 @@ const upload = function (
         'Invalid upload data, request must contains a body with form "multipart/form-data", and inputs with type="file". ',
       );
     }
-    next();
+    await next();
   };
 };
 const preUploadValidate = function (
