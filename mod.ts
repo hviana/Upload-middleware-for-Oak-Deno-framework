@@ -38,7 +38,7 @@ const upload = function (
           context.request.headers.get("content-length")
         } bytes, maximum: ${maxSizeBytes} bytes. `,
       );
-      next();
+      await next();
     }
     const boundaryRegex = /^multipart\/form-data;\sboundary=(?<boundary>.*)$/;
     let match: RegExpMatchArray | null;
@@ -78,7 +78,7 @@ const upload = function (
       if (validations != "") {
         await form.removeAll();
         context.throw(422, validations);
-        next();
+        await next();
       }
       for (const item of entries) {
         let formField: any = item[0];
@@ -183,7 +183,7 @@ const preUploadValidate = function (
     if (validations != "") {
       context.throw(422, validations);
     }
-    next();
+    await next();
   };
 };
 export { upload, preUploadValidate };
