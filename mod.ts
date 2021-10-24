@@ -50,7 +50,7 @@ const upload = function (
     ) {
       const formBoundary: string = match.groups!.boundary;
       const mr = new MultipartReader(
-        context.request.serverRequest.body,
+        await context.request.body({ type: 'reader' }).value,
         formBoundary,
       );
       const form = await mr.readForm(0);
