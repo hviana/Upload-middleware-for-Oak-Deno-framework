@@ -1,5 +1,4 @@
-import { ensureDir, ensureDirSync, v4, move, MultipartReader } from "./deps.ts";
-import { SEP, join } from "https://deno.land/std/path/mod.ts";
+import { ensureDir, ensureDirSync, v4, move, MultipartReader, SEP, join } from "./deps.ts";
 
 interface UploadOptions {
   extensions?: Array<string>;
