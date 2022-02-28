@@ -28,13 +28,14 @@ const upload = function (
   const { extensions, maxSizeBytes, maxFileSizeBytes, saveFile, readFile, useCurrentDir, useDateTimeSubDir } = mergedOptions;
   ensureDirSync(join(Deno.cwd(), 'temp_uploads'));
   return async (context: any, next: any) => {
+    const req = context.request.originalRequest;
     if (
-      parseInt(context.request.headers.get("content-length")) > maxSizeBytes!
+      parseInt(req.headers.get("content-length")) > maxSizeBytes!
     ) {
       context.throw(
         422,
         `Maximum total upload size exceeded, size: ${
-          context.request.headers.get("content-length")
+          req.headers.get("content-length")
         } bytes, maximum: ${maxSizeBytes} bytes. `,
       );
       await next();
@@ -42,14 +43,14 @@ const upload = function (
     const boundaryRegex = /^multipart\/form-data;\sboundary=(?<boundary>.*)$/;
     let match: RegExpMatchArray | null;
     if (
-      context.request.headers.get("content-type") &&
-      (match = context.request.headers.get("content-type")!.match(
+      req.headers.get("content-type") &&
+      (match = req.headers.get("content-type")!.match(
         boundaryRegex,
       ))
     ) {
       const formBoundary: string = match.groups!.boundary;
       const mr = new MultipartReader(
-        context.request.serverRequest.body,
+        req.body,
         formBoundary,
       );
       const form = await mr.readForm(0);
